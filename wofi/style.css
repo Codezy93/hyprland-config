@@ -1,0 +1,63 @@
+/* ── Dusk Garden — macOS x Cyberpunk Wofi ──── */
+
+window {
+    margin: 0;
+    border: 1px solid rgba(72, 72, 74, 0.4);
+    border-radius: 16px;
+    background-color: rgba(28, 28, 30, 0.85);
+    font-family: "SF Pro Display", "Inter", "JetBrainsMono Nerd Font", sans-serif;
+    font-size: 14px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+}
+
+#input {
+    padding: 12px 18px;
+    margin: 10px 10px 4px;
+    border: 1px solid rgba(72, 72, 74, 0.3);
+    border-radius: 10px;
+    color: #FCFCFC;
+    background-color: rgba(44, 44, 46, 0.8);
+    font-size: 15px;
+}
+
+#input:focus {
+    border: 1px solid rgba(153, 225, 217, 0.4);
+    /* Cyberpunk: input glow */
+    box-shadow: 0 0 12px rgba(153, 225, 217, 0.08);
+}
+
+#inner-box {
+    margin: 4px 8px;
+}
+
+#outer-box {
+    margin: 0;
+    padding: 0;
+}
+
+#scroll {
+    margin: 0;
+}
+
+#text {
+    padding: 6px 10px;
+    color: #FCFCFC;
+}
+
+#text:selected {
+    color: #FCFCFC;
+}
+
+#entry {
+    padding: 4px;
+    border-radius: 10px;
+}
+
+#entry:selected {
+    background-color: rgba(153, 225, 217, 0.15);
+    border: 1px solid rgba(153, 225, 217, 0.2);
+}
+
+#entry:hover {
+    background-color: rgba(58, 58, 60, 0.6);
+}

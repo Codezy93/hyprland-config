@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dusk Garden — macOS x Cyberpunk</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --fg:      #FCFCFC;
+    --rose:    #B48291;
+    --cream:   #FFFAE3;
+    --mint:    #99E1D9;
+    --plum:    #5D576B;
+    --bg:      #1C1C1E;
+    --bg-alt:  #2C2C2E;
+    --surface: #3A3A3C;
+    --border:  #48484A;
+    --muted:   #8E8E93;
+    --page-bg: #111113;
+    --glow:    rgba(153, 225, 217, 0.12);
+    --glass:   rgba(28, 28, 30, 0.78);
+    transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  :root.light {
+    --fg:      #1C1C1E;
+    --rose:    #9E6B7A;
+    --cream:   #C49A3B;
+    --mint:    #4A9B90;
+    --plum:    #5D576B;
+    --bg:      #F5F5F7;
+    --bg-alt:  #E8E8ED;
+    --surface: #D1D1D6;
+    --border:  #C7C7CC;
+    --muted:   #8E8E93;
+    --page-bg: #E5E5EA;
+    --glow:    rgba(74, 155, 144, 0.08);
+    --glass:   rgba(245, 245, 247, 0.78);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--page-bg);
+    color: var(--fg);
+    min-height: 100vh;
+    padding: 32px 24px;
+    transition: background 0.5s ease;
+  }
+
+  /* ── Header ────────────────────────────── */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--fg);
+  }
+
+  .header h1 span {
+    background: linear-gradient(135deg, var(--mint), var(--rose));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .header p {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 6px;
+  }
+
+  /* ── Palette ───────────────────────────── */
+  .palette {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+
+  .swatch {
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .swatch:hover { transform: translateY(-3px); }
+
+  .swatch-color {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    margin-bottom: 4px;
+    transition: box-shadow 0.3s;
+  }
+
+  .swatch:hover .swatch-color {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+
+  .swatch-hex { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+  .swatch-label { font-size: 10px; color: var(--muted); }
+
+  /* ── View Toggle ───────────────────────── */
+  .toggle-bar {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    margin-bottom: 28px;
+    background: var(--bg-alt);
+    border-radius: 10px;
+    padding: 3px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .toggle-btn {
+    padding: 7px 18px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .toggle-btn:hover { color: var(--fg); }
+
+  .toggle-btn.active {
+    background: var(--bg);
+    color: var(--fg);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+
+  /* ── Desktop ───────────────────────────── */
+  .desktop {
+    max-width: 1100px;
+    margin: 0 auto 32px;
+    background: var(--bg);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    position: relative;
+  }
+
+  /* ── Top Bar ────────────────────────────── */
+  .dock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 4px 12px;
+    font-size: 13px;
+    height: 38px;
+    margin: 6px 8px 0;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.04);
+
+    /* Cyberpunk: subtle bottom glow line */
+    box-shadow: 0 1px 0 0 rgba(153, 225, 217, 0.08),
+                0 4px 16px rgba(0,0,0,0.2);
+  }
+
+  .dock-left, .dock-center, .dock-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .dock-left { margin-right: auto; }
+  .dock-right { margin-left: auto; }
+
+  .dock-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .dock-icon:hover {
+    color: var(--fg);
+    background: rgba(255,255,255,0.06);
+  }
+
+  .dock-icon.active {
+    color: var(--mint);
+    text-shadow: 0 0 10px rgba(153, 225, 217, 0.5);
+  }
+
+  .dock-icon.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--mint);
+    box-shadow: 0 0 6px var(--mint);
+  }
+
+  .dock-sep {
+    width: 1px;
+    height: 20px;
+    background: rgba(255,255,255,0.08);
+    margin: 0 4px;
+  }
+
+  .dock-clock {
+    color: var(--fg);
+    font-weight: 500;
+    font-size: 13px;
+    padding: 0 8px;
+  }
+
+  .dock-darkmode {
+    cursor: pointer;
+    font-size: 13px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    color: var(--mint);
+    transition: all 0.2s;
+  }
+
+  .dock-darkmode:hover {
+    background: rgba(255,255,255,0.06);
+  }
+
+  .dock-power {
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .dock-power:hover {
+    color: var(--rose);
+  }
+
+  /* ── Desktop Content ───────────────────── */
+  .desktop-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 260px;
+    gap: 12px;
+    padding: 12px;
+    min-height: 440px;
+  }
+
+  .widget-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* ── Widgets ─────────────────────────── */
+  .widget {
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .widget::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(153,225,217,0.15), transparent);
+  }
+
+  .widget:hover {
+    border-color: rgba(153, 225, 217, 0.2);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+
+  .widget-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .widget-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .widget-icon {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* Clock Widget */
+  .widget-clock-time {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .widget-clock-date {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .widget-clock-seconds {
+    font-size: 14px;
+    color: var(--mint);
+    font-weight: 400;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Weather Widget */
+  .weather-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .weather-temp {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--fg);
+    line-height: 1;
+  }
+
+  .weather-icon {
+    font-size: 28px;
+  }
+
+  .weather-desc {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .weather-details {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .weather-detail span { color: var(--cream); }
+
+  /* Now Playing Widget */
+  .np-info {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .np-art {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--plum), var(--rose));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .np-track {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg);
+    line-height: 1.2;
+  }
+
+  .np-artist {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .np-bar {
+    margin-top: 8px;
+    height: 3px;
+    background: var(--surface);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .np-progress {
+    height: 100%;
+    width: 62%;
+    background: linear-gradient(90deg, var(--mint), var(--rose));
+    border-radius: 2px;
+    box-shadow: 0 0 6px rgba(153, 225, 217, 0.3);
+    animation: npSlide 8s linear infinite;
+  }
+
+  @keyframes npSlide {
+    0% { width: 62%; }
+    100% { width: 100%; }
+  }
+
+  .np-controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .np-controls span {
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .np-controls span:hover { color: var(--fg); }
+  .np-controls .np-play { color: var(--mint); font-size: 14px; }
+
+  /* Notes Widget */
+  .note-item {
+    padding: 5px 0;
+    font-size: 12px;
+    color: var(--fg);
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .note-item:last-child { border-bottom: none; }
+
+  .note-check {
+    width: 13px;
+    height: 13px;
+    border-radius: 4px;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .note-check.done {
+    background: var(--mint);
+    border-color: var(--mint);
+    color: var(--bg);
+  }
+
+  .note-text.done {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+
+  /* Docker Widget */
+  .docker-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .docker-status {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .docker-status.running {
+    background: #28C840;
+    box-shadow: 0 0 6px rgba(40, 200, 64, 0.4);
+  }
+
+  .docker-status.stopped {
+    background: var(--rose);
+    box-shadow: 0 0 6px rgba(180, 130, 145, 0.3);
+  }
+
+  .docker-status.paused {
+    background: var(--cream);
+    box-shadow: 0 0 6px rgba(255, 250, 227, 0.3);
+  }
+
+  .docker-name {
+    color: var(--fg);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .docker-port {
+    color: var(--muted);
+    font-size: 10px;
+  }
+
+  /* ── macOS Window Chrome ────────────────── */
+  .mac-window {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s;
+  }
+
+  .mac-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent);
+    gap: 8px;
+    min-height: 38px;
+  }
+
+  .traffic-lights {
+    display: flex;
+    gap: 6px;
+  }
+
+  .tl {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 0.5px solid rgba(0,0,0,0.1);
+  }
+
+  .tl-close { background: #FF5F57; }
+  .tl-min   { background: #FFBD2E; }
+  .tl-max   { background: #28C840; }
+
+  .mac-title {
+    flex: 1;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .mac-title-spacer {
+    width: 54px; /* balance traffic lights */
+  }
+
+  .mac-body {
+    padding: 14px;
+    flex: 1;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    overflow: hidden;
+  }
+
+  /* ── Terminal Colors ────────────────────── */
+  .prompt { color: var(--mint); }
+  .cmd { color: var(--fg); }
+  .output { color: var(--muted); }
+  .hi { color: var(--mint); }
+  .str { color: var(--rose); }
+  .warn { color: var(--cream); }
+  .cursor-blink {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background: var(--mint);
+    animation: blink 1s step-end infinite;
+    vertical-align: text-bottom;
+    box-shadow: 0 0 6px rgba(153, 225, 217, 0.3);
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ── File Manager ──────────────────────── */
+  .file-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: background 0.15s;
+    color: var(--fg);
+  }
+
+  .file-item:hover { background: rgba(255,255,255,0.04); }
+  .file-item.selected {
+    background: rgba(153, 225, 217, 0.08);
+    border: 1px solid rgba(153, 225, 217, 0.15);
+  }
+
+  .file-icon { font-size: 18px; width: 24px; text-align: center; }
+  .file-name { flex: 1; }
+  .file-size { color: var(--muted); font-size: 11px; }
+
+  /* ── Notification ──────────────────────── */
+  .notification {
+    position: absolute;
+    top: 56px;
+    right: 12px;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 14px 18px;
+    width: 260px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+    animation: notifIn 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .notif-app {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .notif-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--fg);
+    margin-bottom: 2px;
+  }
+
+  .notif-body {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  @keyframes notifIn {
+    from { transform: translateY(-20px) scale(0.95); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+  }
+
+  /* ── Lock Screen ───────────────────────── */
+  .lockscreen {
+    max-width: 1100px;
+    margin: 0 auto 32px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    height: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+    position: relative;
+  }
+
+  /* Cyberpunk: subtle scan lines */
+  .lockscreen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(153, 225, 217, 0.01) 2px,
+      rgba(153, 225, 217, 0.01) 4px
+    );
+    pointer-events: none;
+  }
+
+  .lock-time {
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: -2px;
+  }
+
+  .lock-date {
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-top: 4px;
+  }
+
+  .lock-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--mint), var(--rose));
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 0 20px rgba(153, 225, 217, 0.15);
+  }
+
+  .lock-name {
+    font-size: 15px;
+    color: var(--fg);
+    font-weight: 500;
+    margin-top: 10px;
+  }
+
+  .lock-input {
+    margin-top: 10px;
+    width: 220px;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    text-align: center;
+    outline: none;
+    transition: border 0.2s;
+  }
+
+  .lock-input:focus {
+    border-color: var(--mint);
+    box-shadow: 0 0 12px rgba(153, 225, 217, 0.1);
+  }
+
+  /* ── Wofi Overlay ──────────────────────── */
+  .wofi-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 20vh;
+  }
+
+  .wofi-overlay.visible { display: flex; }
+
+  .wofi {
+    width: 520px;
+    background: var(--glass);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.45);
+  }
+
+  .wofi-input {
+    width: 100%;
+    padding: 14px 18px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    color: var(--fg);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    outline: none;
+  }
+
+  .wofi-input::placeholder { color: var(--muted); }
+
+  .wofi-list { padding: 6px; }
+
+  .wofi-item {
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: var(--fg);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.12s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .wofi-item:hover { background: rgba(255,255,255,0.04); }
+
+  .wofi-item.selected {
+    background: rgba(153, 225, 217, 0.1);
+    border: 1px solid rgba(153, 225, 217, 0.15);
+  }
+
+  .wofi-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  /* ── Shortcuts Panel ───────────────────── */
+  .shortcuts {
+    max-width: 1100px;
+    margin: 0 auto 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .shortcut-group {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .shortcut-group h3 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .shortcut {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    font-size: 12px;
+  }
+
+  .shortcut-label { color: var(--fg); }
+
+  .shortcut-keys {
+    display: flex;
+    gap: 3px;
+  }
+
+  .key {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 2px 7px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    min-width: 22px;
+    text-align: center;
+  }
+
+  .key.accent {
+    border-color: rgba(153, 225, 217, 0.3);
+    color: var(--mint);
+    box-shadow: 0 0 4px rgba(153, 225, 217, 0.08);
+  }
+
+  /* ── Section Label ─────────────────────── */
+  .section-label {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  .desktop-wrapper { position: relative; }
+</style>
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────── -->
+<div class="header">
+  <h1><span>Dusk Garden</span></h1>
+  <p>macOS x Cyberpunk — Hyprland Rice</p>
+</div>
+
+<!-- ── Palette ──────────────────────────────── -->
+<div class="palette">
+  <div class="swatch"><div class="swatch-color" style="background:#FCFCFC"></div><div class="swatch-hex">#FCFCFC</div><div class="swatch-label">Snow</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#B48291"></div><div class="swatch-hex">#B48291</div><div class="swatch-label">Rose</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#FFFAE3"></div><div class="swatch-hex">#FFFAE3</div><div class="swatch-label">Cream</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#99E1D9"></div><div class="swatch-hex">#99E1D9</div><div class="swatch-label">Mint</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#5D576B"></div><div class="swatch-hex">#5D576B</div><div class="swatch-label">Plum</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#1C1C1E"></div><div class="swatch-hex">#1C1C1E</div><div class="swatch-label">BG</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#2C2C2E"></div><div class="swatch-hex">#2C2C2E</div><div class="swatch-label">Surface</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#48484A"></div><div class="swatch-hex">#48484A</div><div class="swatch-label">Border</div></div>
+</div>
+
+<!-- ── View Toggle ─────────────────────────── -->
+<div class="toggle-bar">
+  <button class="toggle-btn active" onclick="showView('desktop')">Desktop</button>
+  <button class="toggle-btn" onclick="showView('lockscreen')">Lock Screen</button>
+  <button class="toggle-btn" onclick="showView('shortcuts')">Shortcuts</button>
+  <button class="toggle-btn" onclick="showWofi()">Spotlight</button>
+</div>
+
+<!-- ── Desktop ─────────────────────────────── -->
+<div id="desktop-view" class="desktop-wrapper">
+  <div class="section-label">Desktop</div>
+  <div class="desktop">
+    <!-- Top Bar -->
+    <div class="dock">
+      <div class="dock-left">
+        <div class="dock-icon" style="font-size:18px;color:var(--fg);" onclick="showWofi()"> </div>
+        <div class="dock-sep"></div>
+        <div class="dock-icon active" title="Desktop 1">●</div>
+        <div class="dock-icon" title="Desktop 2">●</div>
+        <div class="dock-icon" title="Desktop 3">●</div>
+        <div class="dock-icon" title="Desktop 4">●</div>
+        <div class="dock-icon" title="Desktop 5">●</div>
+      </div>
+      <div class="dock-center">
+        <span class="dock-clock" id="dock-clock">Sat 22 Mar  14:32</span>
+      </div>
+      <div class="dock-right">
+        <div class="dock-icon" title="CPU">󰻠</div>
+        <div class="dock-icon" title="Volume">󰕾</div>
+        <div class="dock-icon" title="WiFi">󰤨</div>
+        <div class="dock-icon" title="Battery">󰂁</div>
+        <div class="dock-sep"></div>
+        <span class="dock-darkmode" id="dock-darkmode" onclick="toggleDarkMode()" title="Toggle theme">🌙</span>
+        <span class="dock-power" onclick="showWofi()" title="Power menu">⏻</span>
+      </div>
+    </div>
+
+    <div class="desktop-content">
+      <!-- Terminal -->
+      <div class="mac-window">
+        <div class="mac-titlebar">
+          <div class="traffic-lights"><div class="tl tl-close"></div><div class="tl tl-min"></div><div class="tl tl-max"></div></div>
+          <span class="mac-title">kitty — ~/dotfiles</span>
+          <div class="mac-title-spacer"></div>
+        </div>
+        <div class="mac-body">
+          <div><span class="prompt">❯</span> <span class="cmd">neofetch</span></div>
+          <div><span class="hi">        /\         </span> <span class="output">viraj</span><span class="muted">@</span><span class="output">arch</span></div>
+          <div><span class="hi">       /  \        </span> <span style="color:var(--border)">──────────────</span></div>
+          <div><span class="hi">      /\   \       </span> <span class="muted">OS</span>     <span class="cmd">Arch Linux</span></div>
+          <div><span class="hi">     /      \      </span> <span class="muted">WM</span>     <span class="cmd">Hyprland</span></div>
+          <div><span class="hi">    /   ,,   \     </span> <span class="muted">Theme</span>  <span class="str">Dusk Garden</span></div>
+          <div><span class="hi">   /   |  |   \    </span> <span class="muted">GPU</span>    <span class="cmd">GTX 1650 Ti</span></div>
+          <div><span class="hi">  /_-''    ''-_\   </span> <span class="muted">Shell</span>  <span class="cmd">zsh</span></div>
+          <div>&nbsp;</div>
+          <div id="color-blocks">
+            <span style="color:#1C1C1E;background:#1C1C1E">██</span><span style="color:#B48291;background:#B48291">██</span><span style="color:#99E1D9;background:#99E1D9">██</span><span style="color:#FFFAE3;background:#FFFAE3">██</span><span style="color:#5D576B;background:#5D576B">██</span><span style="color:#8E8E93;background:#8E8E93">██</span><span style="color:#FCFCFC;background:#FCFCFC">██</span>
+          </div>
+          <div>&nbsp;</div>
+          <div><span class="prompt">❯</span> <span class="cursor-blink"></span></div>
+        </div>
+      </div>
+
+      <!-- File Manager -->
+      <div class="mac-window">
+        <div class="mac-titlebar">
+          <div class="traffic-lights"><div class="tl tl-close"></div><div class="tl tl-min"></div><div class="tl tl-max"></div></div>
+          <span class="mac-title">Thunar — ~/.config/hypr</span>
+          <div class="mac-title-spacer"></div>
+        </div>
+        <div class="mac-body" style="font-family:'Inter',sans-serif;padding:8px 12px;">
+          <div class="file-item selected">
+            <span class="file-icon">📁</span><span class="file-name">scripts</span><span class="file-size">5 items</span>
+          </div>
+          <div class="file-item">
+            <span class="file-icon">📁</span><span class="file-name">themes</span><span class="file-size">1 item</span>
+          </div>
+          <div class="file-item">
+            <span class="file-icon">📁</span><span class="file-name">wallpapers</span><span class="file-size">—</span>
+          </div>
+          <div class="file-item">
+            <span class="file-icon">📄</span><span class="file-name">hyprland.conf</span><span class="file-size">1.8K</span>
+          </div>
+          <div class="file-item">
+            <span class="file-icon">📄</span><span class="file-name">appearance.conf</span><span class="file-size">1.1K</span>
+          </div>
+          <div class="file-item">
+            <span class="file-icon">📄</span><span class="file-name">keybinds.conf</span><span class="file-size">2.6K</span>
+          </div>
+          <div class="file-item">
+            <span class="file-icon">📄</span><span class="file-name">hyprlock.conf</span><span class="file-size">1.2K</span>
+          </div>
+          <div class="file-item">
+            <span class="file-icon">📄</span><span class="file-name">autostart.conf</span><span class="file-size">0.8K</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <!-- Widget Column -->
+      <div class="widget-col">
+        <!-- Clock Widget -->
+        <div class="widget">
+          <div class="widget-header"><span class="widget-title">Clock</span><span class="widget-icon">⏰</span></div>
+          <div class="widget-clock-time" id="w-clock-time">14:32<span class="widget-clock-seconds" id="w-clock-sec">:48</span></div>
+          <div class="widget-clock-date" id="w-clock-date">Saturday, March 22</div>
+        </div>
+
+        <!-- Weather Widget -->
+        <div class="widget">
+          <div class="widget-header"><span class="widget-title">Weather</span><span class="widget-icon">📍 City</span></div>
+          <div class="weather-main">
+            <span class="weather-icon">⛅</span>
+            <div>
+              <div class="weather-temp">24°</div>
+              <div class="weather-desc">Partly Cloudy</div>
+            </div>
+          </div>
+          <div class="weather-details">
+            <div class="weather-detail">💧 <span>52%</span></div>
+            <div class="weather-detail">💨 <span>12km/h</span></div>
+            <div class="weather-detail">🌡 <span>28°/19°</span></div>
+          </div>
+        </div>
+
+        <!-- Now Playing Widget -->
+        <div class="widget">
+          <div class="widget-header"><span class="widget-title">Now Playing</span><span class="widget-icon" style="color:var(--mint)">♫</span></div>
+          <div class="np-info">
+            <div class="np-art">🎵</div>
+            <div>
+              <div class="np-track">Feather</div>
+              <div class="np-artist">Nujabes ft. Cise Starr</div>
+            </div>
+          </div>
+          <div class="np-bar"><div class="np-progress"></div></div>
+          <div class="np-controls">
+            <span>⏮</span>
+            <span class="np-play">▶</span>
+            <span>⏭</span>
+          </div>
+        </div>
+
+        <!-- Quick Notes Widget -->
+        <div class="widget">
+          <div class="widget-header"><span class="widget-title">Quick Notes</span><span class="widget-icon">📝</span></div>
+          <div class="note-item"><div class="note-check done">✓</div><span class="note-text done">Update Hyprland config</span></div>
+          <div class="note-item"><div class="note-check done">✓</div><span class="note-text done">Fix NVIDIA env vars</span></div>
+          <div class="note-item"><div class="note-check"></div><span class="note-text">Set up Docker compose</span></div>
+          <div class="note-item"><div class="note-check"></div><span class="note-text">Push dotfiles to GitHub</span></div>
+        </div>
+
+        <!-- Docker Widget -->
+        <div class="widget">
+          <div class="widget-header"><span class="widget-title">Docker</span><span class="widget-icon">🐳</span></div>
+          <div class="docker-container"><div class="docker-status running"></div><span class="docker-name">postgres-db</span><span class="docker-port">:5432</span></div>
+          <div class="docker-container"><div class="docker-status running"></div><span class="docker-name">mongo-dev</span><span class="docker-port">:27017</span></div>
+          <div class="docker-container"><div class="docker-status running"></div><span class="docker-name">redis-cache</span><span class="docker-port">:6379</span></div>
+          <div class="docker-container"><div class="docker-status paused"></div><span class="docker-name">nginx-proxy</span><span class="docker-port">:8080</span></div>
+          <div class="docker-container"><div class="docker-status stopped"></div><span class="docker-name">mysql-test</span><span class="docker-port">:3306</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification">
+      <div class="notif-app">Music</div>
+      <div class="notif-title">Now Playing</div>
+      <div class="notif-body">Nujabes — Feather</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Lock Screen ─────────────────────────── -->
+<div id="lockscreen-view" style="display:none">
+  <div class="section-label">Lock Screen</div>
+  <div class="lockscreen">
+    <div class="lock-time" id="lock-time">14:32</div>
+    <div class="lock-date" id="lock-date">Saturday, March 22</div>
+    <div class="lock-avatar">V</div>
+    <div class="lock-name">viraj</div>
+    <input type="password" class="lock-input" placeholder="Password" readonly>
+  </div>
+</div>
+
+<!-- ── Shortcuts ───────────────────────────── -->
+<div id="shortcuts-view" style="display:none">
+  <div class="section-label">Keyboard Shortcuts</div>
+  <div class="shortcuts">
+    <div class="shortcut-group">
+      <h3>Quick Launch</h3>
+      <div class="shortcut"><span class="shortcut-label">Terminal</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">↵</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Launcher</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Space</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Brave</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">B</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Files</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">E</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Clipboard</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">V</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Shortcuts</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">/</span></div></div>
+    </div>
+    <div class="shortcut-group">
+      <h3>App Launchers</h3>
+      <div class="shortcut"><span class="shortcut-label">Cursor</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Alt</span><span class="key">C</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Obsidian</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Alt</span><span class="key">O</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Spotify</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Alt</span><span class="key">S</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Thunderbird</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Alt</span><span class="key">T</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Postman</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Alt</span><span class="key">P</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Docker</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Alt</span><span class="key">D</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Bitwarden</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Alt</span><span class="key">B</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Qalculate</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Alt</span><span class="key">Q</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">MongoDB</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Alt</span><span class="key">M</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Chrome</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Alt</span><span class="key">G</span></div></div>
+    </div>
+    <div class="shortcut-group">
+      <h3>Windows</h3>
+      <div class="shortcut"><span class="shortcut-label">Close</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Q</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Fullscreen</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">F</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Maximize</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">M</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Float</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">T</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Center</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">C</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Focus</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">H/L/K/J</span></div></div>
+    </div>
+    <div class="shortcut-group">
+      <h3>Workspaces</h3>
+      <div class="shortcut"><span class="shortcut-label"> Term</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">1</span></div></div>
+      <div class="shortcut"><span class="shortcut-label"> Code</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">2</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">󰈹 Web</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">3</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">󰇮 Mail</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">4</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">󰆼 DB</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">5</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">󰡨 Docker</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">6</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">󱓧 Notes</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">7</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">󰓇 Music</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">8</span></div></div>
+      <div class="shortcut"><span class="shortcut-label"> Misc</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">9</span></div></div>
+      <div class="shortcut"><span class="shortcut-label"> Extra</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">0</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Move to WS</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">⇧</span><span class="key">1-0</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Scratchpad</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">S</span></div></div>
+    </div>
+    <div class="shortcut-group">
+      <h3>System</h3>
+      <div class="shortcut"><span class="shortcut-label">Theme</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">D</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Wallpaper</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">W</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Screenshot</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">⇧</span><span class="key">S</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Notifications</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">N</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Power</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">X</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Exit</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">⇧</span><span class="key">Q</span></div></div>
+    </div>
+    <div class="shortcut-group">
+      <h3>Move & Resize</h3>
+      <div class="shortcut"><span class="shortcut-label">Move</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">⇧</span><span class="key">←→↑↓</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Resize</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Ctrl</span><span class="key">←→↑↓</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Drag Move</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">LMB</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Drag Resize</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">RMB</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Scroll WS</span><div class="shortcut-keys"><span class="key accent">⌘</span><span class="key">Scroll</span></div></div>
+    </div>
+    <div class="shortcut-group">
+      <h3>Media</h3>
+      <div class="shortcut"><span class="shortcut-label">Volume ±</span><div class="shortcut-keys"><span class="key">Vol Keys</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Mute</span><div class="shortcut-keys"><span class="key">Mute Key</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Brightness</span><div class="shortcut-keys"><span class="key">Bright Keys</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Play/Pause</span><div class="shortcut-keys"><span class="key">Play Key</span></div></div>
+      <div class="shortcut"><span class="shortcut-label">Next/Prev</span><div class="shortcut-keys"><span class="key">Next/Prev</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Wofi Overlay ────────────────────────── -->
+<div class="wofi-overlay" id="wofi-overlay" onclick="hideWofi(event)">
+  <div class="wofi" onclick="event.stopPropagation()">
+    <input class="wofi-input" placeholder="Search..." autofocus>
+    <div class="wofi-list">
+      <div class="wofi-item selected"><div class="wofi-icon">🦁</div>Brave Browser</div>
+      <div class="wofi-item"><div class="wofi-icon">✏️</div>Cursor</div>
+      <div class="wofi-item"><div class="wofi-icon">⌨</div>Kitty</div>
+      <div class="wofi-item"><div class="wofi-icon">📝</div>Obsidian</div>
+      <div class="wofi-item"><div class="wofi-icon">🎵</div>Spotify</div>
+      <div class="wofi-item"><div class="wofi-icon">🐳</div>Docker Desktop</div>
+      <div class="wofi-item"><div class="wofi-icon">📮</div>Postman</div>
+      <div class="wofi-item"><div class="wofi-icon">🔐</div>Bitwarden</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Clock
+  function updateClock() {
+    const now = new Date();
+    const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+    const sec = ':' + now.getSeconds().toString().padStart(2, '0');
+    const dockFmt = now.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' }) + '  ' + time;
+    const date = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    document.getElementById('dock-clock').textContent = dockFmt;
+    document.getElementById('lock-time').textContent = time;
+    document.getElementById('lock-date').textContent = date;
+    document.getElementById('w-clock-time').innerHTML = time + '<span class="widget-clock-seconds">' + sec + '</span>';
+    document.getElementById('w-clock-date').textContent = date;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // Note checkboxes
+  document.querySelectorAll('.note-check:not(.done)').forEach(check => {
+    check.addEventListener('click', () => {
+      check.classList.toggle('done');
+      check.textContent = check.classList.contains('done') ? '✓' : '';
+      check.nextElementSibling.classList.toggle('done');
+    });
+  });
+
+  // View toggle
+  function showView(view) {
+    ['desktop', 'lockscreen', 'shortcuts'].forEach(v => {
+      const el = document.getElementById(v + '-view');
+      if (el) el.style.display = v === view ? 'block' : 'none';
+    });
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+      const match = btn.textContent.toLowerCase().replace(' ', '');
+      btn.classList.toggle('active', match === view || (view === 'shortcuts' && btn.textContent === 'Shortcuts') || (view === 'lockscreen' && btn.textContent === 'Lock Screen'));
+    });
+  }
+
+  // Wofi
+  function showWofi() {
+    document.getElementById('wofi-overlay').classList.add('visible');
+    setTimeout(() => document.querySelector('.wofi-input').focus(), 100);
+  }
+  function hideWofi(e) {
+    if (e.target === document.getElementById('wofi-overlay'))
+      document.getElementById('wofi-overlay').classList.remove('visible');
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') document.getElementById('wofi-overlay').classList.remove('visible');
+  });
+
+  // Workspace dots
+  document.querySelectorAll('.dock-icon[title^="Desktop"]').forEach(dot => {
+    dot.addEventListener('click', () => {
+      document.querySelectorAll('.dock-icon[title^="Desktop"]').forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+    });
+  });
+
+  // Dark mode
+  let isDark = true;
+  function toggleDarkMode() {
+    isDark = !isDark;
+    document.documentElement.classList.toggle('light', !isDark);
+    document.getElementById('dock-darkmode').textContent = isDark ? '🌙' : '☀️';
+
+    // Update dynamic glass backgrounds
+    const glass = isDark ? 'rgba(28, 28, 30, 0.78)' : 'rgba(245, 245, 247, 0.78)';
+    document.querySelectorAll('.dock, .notification').forEach(el => {
+      el.style.background = glass;
+      el.style.backdropFilter = 'blur(20px)';
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+/* ── Dusk Garden — macOS x Cyberpunk Waybar ─── */
+
+@define-color bg      #1C1C1E;
+@define-color bg_alt  #2C2C2E;
+@define-color surface #3A3A3C;
+@define-color fg      #FCFCFC;
+@define-color rose    #B48291;
+@define-color cream   #FFFAE3;
+@define-color mint    #99E1D9;
+@define-color plum    #5D576B;
+@define-color border  #48484A;
+@define-color muted   #8E8E93;
+
+* {
+    font-family: "SF Pro Display", "Inter", "JetBrainsMono Nerd Font", sans-serif;
+    font-size: 13px;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+}
+
+/* ── Dock-style bar ──────────────────────────── */
+
+window#waybar {
+    background: transparent;
+}
+
+window#waybar > box {
+    background: alpha(@bg, 0.78);
+    border: 1px solid alpha(@border, 0.4);
+    border-radius: 16px;
+    padding: 0 8px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+
+    /* Cyberpunk: subtle bottom glow */
+    border-bottom: 1px solid alpha(@mint, 0.12);
+}
+
+/* ── Module Base ─────────────────────────────── */
+
+#workspaces,
+#window,
+#clock,
+#cpu,
+#memory,
+#temperature,
+#disk,
+#network,
+#bluetooth,
+#pulseaudio,
+#pulseaudio.input,
+#backlight,
+#battery,
+#language,
+#tray,
+#custom-launcher,
+#custom-power,
+#custom-weather,
+#custom-media,
+#custom-dunst,
+#custom-darkmode {
+    padding: 0 7px;
+    color: @muted;
+    background: transparent;
+    border-radius: 10px;
+    margin: 6px 1px;
+    transition: all 0.2s ease;
+}
+
+/* Show details on hover — macOS tooltip feel */
+#cpu:hover,
+#memory:hover,
+#temperature:hover,
+#disk:hover,
+#network:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#pulseaudio.input:hover,
+#backlight:hover,
+#battery:hover,
+#language:hover,
+#custom-weather:hover,
+#custom-dunst:hover,
+#custom-darkmode:hover {
+    color: @fg;
+    background: alpha(@surface, 0.6);
+}
+
+/* ── Launcher (Apple-ish) ────────────────────── */
+
+#custom-launcher {
+    color: @fg;
+    font-size: 18px;
+    padding: 0 10px 0 6px;
+    margin-right: 2px;
+}
+
+#custom-launcher:hover {
+    background: alpha(@surface, 0.5);
+}
+
+/* ── Workspaces (dock dots) ──────────────────── */
+
+#workspaces button {
+    padding: 0 6px;
+    color: alpha(@muted, 0.5);
+    background: transparent;
+    border-radius: 10px;
+    margin: 6px 1px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+#workspaces button.active {
+    color: @mint;
+    background: alpha(@mint, 0.1);
+
+    /* Cyberpunk: active glow */
+    text-shadow: 0 0 8px alpha(@mint, 0.6);
+}
+
+#workspaces button:hover {
+    color: @fg;
+    background: alpha(@surface, 0.5);
+    box-shadow: none;
+    text-shadow: none;
+}
+
+/* ── Clock ───────────────────────────────────── */
+
+#clock {
+    color: @fg;
+    font-weight: 500;
+    padding: 0 12px;
+}
+
+/* ── Media ───────────────────────────────────── */
+
+#custom-media {
+    color: @rose;
+    font-size: 12px;
+    padding: 0 12px;
+}
+
+#custom-media.paused {
+    color: @muted;
+}
+
+/* ── Power ───────────────────────────────────── */
+
+#custom-power {
+    color: @muted;
+    padding: 0 8px 0 6px;
+    margin-left: 2px;
+}
+
+#custom-power:hover {
+    color: @rose;
+    background: alpha(@rose, 0.1);
+}
+
+/* ── System Icons ────────────────────────────── */
+
+#pulseaudio { color: @fg; }
+#pulseaudio.muted { color: alpha(@muted, 0.4); }
+#pulseaudio.input { color: @muted; }
+
+#backlight { color: @cream; }
+
+#network { color: @fg; }
+#network.disconnected { color: alpha(@muted, 0.4); }
+
+#bluetooth { color: @muted; }
+#bluetooth.connected { color: @fg; }
+
+#cpu { color: @muted; }
+#memory { color: @muted; }
+#temperature { color: @muted; }
+#temperature.critical {
+    color: @rose;
+    /* Cyberpunk: warning glow */
+    text-shadow: 0 0 6px alpha(@rose, 0.5);
+}
+
+#disk { color: @muted; }
+#language { color: @muted; }
+#custom-weather { color: @mint; }
+#custom-dunst { color: @muted; }
+
+/* ── Dark Mode Toggle ────────────────────────── */
+
+#custom-darkmode {
+    font-size: 13px;
+    padding: 0 7px;
+}
+
+#custom-darkmode.light { color: @cream; }
+#custom-darkmode.dark { color: @mint; }
+
+/* ── Battery ─────────────────────────────────── */
+
+#battery { color: @fg; }
+
+#battery.warning { color: @cream; }
+#battery.critical {
+    color: @rose;
+    animation: pulse 2s ease infinite;
+}
+
+#battery.charging {
+    color: @mint;
+    /* Cyberpunk: charge glow */
+    text-shadow: 0 0 6px alpha(@mint, 0.4);
+}
+
+@keyframes pulse {
+    50% { opacity: 0.5; }
+}
+
+/* ── Tray ────────────────────────────────────── */
+
+#tray {
+    padding: 0 4px;
+}
+
+#tray > .passive { -gtk-icon-effect: dim; }
+#tray > .needs-attention { -gtk-icon-effect: highlight; }
+
+/* ── Tooltip (frosted glass) ─────────────────── */
+
+tooltip {
+    background: alpha(@bg, 0.85);
+    border: 1px solid alpha(@border, 0.5);
+    border-radius: 10px;
+}
+
+tooltip label {
+    color: @fg;
+    padding: 6px 10px;
+    font-size: 12px;
+}

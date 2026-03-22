@@ -1,0 +1,224 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 42,
+    "spacing": 0,
+    "margin-top": 6,
+    "margin-left": 10,
+    "margin-right": 10,
+    "exclusive": true,
+
+    "modules-left": [
+        "custom/launcher",
+        "hyprland/workspaces"
+    ],
+    "modules-center": [
+        "custom/media",
+        "clock"
+    ],
+    "modules-right": [
+        "custom/weather",
+        "pulseaudio",
+        "pulseaudio#input",
+        "backlight",
+        "bluetooth",
+        "network",
+        "cpu",
+        "memory",
+        "temperature",
+        "disk",
+        "hyprland/language",
+        "battery",
+        "custom/dunst",
+        "custom/darkmode",
+        "tray",
+        "custom/power"
+    ],
+
+    // ── Left ────────────────────────────────
+    "custom/launcher": {
+        "format": "  ",
+        "on-click": "wofi --show drun",
+        "tooltip-format": "Applications"
+    },
+
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "1": "",
+            "2": "",
+            "3": "󰈹",
+            "4": "󰇮",
+            "5": "󰆼",
+            "6": "󰡨",
+            "7": "󱓧",
+            "8": "󰓇",
+            "9": "",
+            "10": ""
+        },
+        "on-click": "activate",
+        "sort-by-number": true,
+        "active-only": false,
+        "all-outputs": true
+    },
+
+    // ── Center ──────────────────────────────
+    "custom/media": {
+        "format": "{icon} {}",
+        "format-icons": {
+            "playing": "▶",
+            "paused": "⏸"
+        },
+        "max-length": 28,
+        "exec": "playerctl metadata --format '{\"text\": \"{{artist}} — {{title}}\", \"tooltip\": \"{{playerName}}: {{artist}} — {{title}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' 2>/dev/null",
+        "on-click": "playerctl play-pause",
+        "return-type": "json",
+        "interval": 2
+    },
+
+    "clock": {
+        "format": "{:%a %d %b  %H:%M}",
+        "format-alt": "{:%A, %B %d, %Y  %H:%M:%S}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "year",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#FCFCFC'><b>{}</b></span>",
+                "days": "<span color='#FCFCFC'>{}</span>",
+                "weeks": "<span color='#5D576B'><b>W{}</b></span>",
+                "weekdays": "<span color='#99E1D9'><b>{}</b></span>",
+                "today": "<span color='#B48291'><b><u>{}</u></b></span>"
+            }
+        }
+    },
+
+    // ── Right ───────────────────────────────
+    "custom/weather": {
+        "exec": "~/.config/hypr/scripts/weather.sh",
+        "interval": 900,
+        "format": "{}",
+        "tooltip": true,
+        "return-type": "json"
+    },
+
+    "pulseaudio": {
+        "format": "{icon}",
+        "format-muted": "󰖁",
+        "format-icons": {
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+        "on-click": "pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "tooltip-format": "Volume: {volume}%",
+        "scroll-step": 5
+    },
+
+    "pulseaudio#input": {
+        "format": "{format_source}",
+        "format-source": "󰍬",
+        "format-source-muted": "󰍭",
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+        "tooltip-format": "Mic: {source_volume}%",
+        "scroll-step": 5
+    },
+
+    "backlight": {
+        "format": "{icon}",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "tooltip-format": "Brightness: {percent}%",
+        "scroll-step": 5
+    },
+
+    "bluetooth": {
+        "format": "󰂯",
+        "format-connected": "󰂱",
+        "format-disabled": "󰂲",
+        "tooltip-format": "{controller_alias}\n{num_connections} connected",
+        "tooltip-format-connected": "{controller_alias}\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}  {device_battery_percentage}%",
+        "on-click": "blueman-manager"
+    },
+
+    "network": {
+        "format-wifi": "󰤨",
+        "format-ethernet": "󰈀",
+        "format-disconnected": "󰤭",
+        "tooltip-format-wifi": "{essid}  ({signalStrength}%)\n{ipaddr}/{cidr}",
+        "tooltip-format-ethernet": "{ifname}\n{ipaddr}/{cidr}",
+        "on-click": "nm-connection-editor"
+    },
+
+    "cpu": {
+        "format": "󰻠",
+        "interval": 2,
+        "tooltip-format": "CPU: {usage}%"
+    },
+
+    "memory": {
+        "format": "󰍛",
+        "format-alt": "󰍛 {percentage}%",
+        "tooltip-format": "RAM: {used:0.1f}G / {total:0.1f}G ({percentage}%)",
+        "interval": 5
+    },
+
+    "temperature": {
+        "critical-threshold": 80,
+        "format": "{icon}",
+        "format-icons": ["", "", "", "", ""],
+        "tooltip-format": "Temperature: {temperatureC}°C"
+    },
+
+    "disk": {
+        "format": "󰋊",
+        "path": "/",
+        "interval": 30,
+        "tooltip-format": "Disk: {used} / {total} ({percentage_used}%)"
+    },
+
+    "hyprland/language": {
+        "format": "󰌌",
+        "tooltip-format": "Layout: {long}"
+    },
+
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}",
+        "format-charging": "󰂄",
+        "format-plugged": "󰂄",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "tooltip-format": "Battery: {capacity}%  {time}"
+    },
+
+    "custom/dunst": {
+        "exec": "~/.config/hypr/scripts/dunst-status.sh",
+        "return-type": "json",
+        "interval": 1,
+        "on-click": "dunstctl set-paused toggle",
+        "tooltip": true
+    },
+
+    "custom/darkmode": {
+        "exec": "~/.config/hypr/scripts/darkmode-status.sh",
+        "return-type": "json",
+        "interval": 2,
+        "on-click": "~/.config/hypr/scripts/darkmode-toggle.sh",
+        "tooltip": true
+    },
+
+    "tray": {
+        "icon-size": 16,
+        "spacing": 6
+    },
+
+    "custom/power": {
+        "format": "⏻",
+        "on-click": "~/.config/hypr/scripts/powermenu.sh",
+        "tooltip-format": "Power Menu"
+    }
+}

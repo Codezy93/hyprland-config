@@ -1,0 +1,47 @@
+# ── OS & Editor ─────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# ── Secrets & Tokens ────────────────────────
+.env
+.env.local
+*.secret
+*.key
+*.token
+
+# ── Personal / Machine-specific ─────────────
+# Wallpapers (add your own, don't commit large images)
+hypr/wallpapers/
+
+# Theme state (runtime generated)
+hypr/.theme-mode
+
+# Weather city config (personal)
+# Uncomment if you don't want to share your city:
+# hypr/scripts/weather.sh
+
+# Monitor config (machine-specific)
+# Uncomment if you want per-machine monitors:
+# hypr/monitors.conf
+
+# ── Logs & Temp ─────────────────────────────
+*.log
+/tmp/
+
+# ── Backup dirs created by install.sh ───────
+.config-backup-*/
+
+# ── Package manager artifacts ────────────────
+node_modules/
+__pycache__/
+*.pyc
+
+# ── Preview only (not a dotfile) ────────────
+# Comment this out if you want to share the preview
+# preview.html
