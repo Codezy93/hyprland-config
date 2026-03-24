@@ -16,6 +16,13 @@ desktop.ini
 *.token
 
 # ── Personal / Machine-specific ─────────────
+# Wallpapers — add your own, only the folder is tracked not the images
+hypr/wallpapers/*.png
+hypr/wallpapers/*.jpg
+hypr/wallpapers/*.jpeg
+hypr/wallpapers/*.webp
+hypr/wallpapers/*.gif
+
 # Theme state (runtime generated)
 hypr/.theme-mode
 
@@ -42,3 +49,5 @@ __pycache__/
 # ── Preview only (not a dotfile) ────────────
 # Comment this out if you want to share the preview
 # preview.html
+
+.claude

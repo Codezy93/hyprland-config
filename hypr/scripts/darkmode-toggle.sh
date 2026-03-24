@@ -33,12 +33,12 @@ $bg_alt   = rgba(E8E4E1ee)
 $surface  = rgba(DDD9D5ee)
 $border   = rgba(D1CCC8ee)
 $muted    = rgba(8A8494ee)
+
+$active_border   = rgba(9E6B7Aee) rgba(5BAB9Fee) 45deg
+$inactive_border = rgba(D1CCC8ee)
 EOF
 
-    # Hyprland border colors
-    hyprctl keyword general:col.active_border "rgba(9E6B7Aee) rgba(5BAB9Fee) 45deg"
-    hyprctl keyword general:col.inactive_border "rgba(D1CCC8ee)"
-    hyprctl keyword decoration:shadow:color "rgba(1E1B2322)"
+    hyprctl reload
 
     # GTK theme
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-light' 2>/dev/null
@@ -86,12 +86,12 @@ $bg_alt   = rgba(2A2631ee)
 $surface  = rgba(312C3Bee)
 $border   = rgba(3D3847ee)
 $muted    = rgba(8A8494ee)
+
+$active_border   = rgba(B48291ee) rgba(99E1D9ee) 45deg
+$inactive_border = rgba(3D3847ee)
 EOF
 
-    # Hyprland border colors
-    hyprctl keyword general:col.active_border "rgba(B48291ee) rgba(99E1D9ee) 45deg"
-    hyprctl keyword general:col.inactive_border "rgba(3D3847ee)"
-    hyprctl keyword decoration:shadow:color "rgba(1E1B23ee)"
+    hyprctl reload
 
     # GTK theme
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' 2>/dev/null
