@@ -16,9 +16,6 @@ desktop.ini
 *.token
 
 # ── Personal / Machine-specific ─────────────
-# Wallpapers (add your own, don't commit large images)
-hypr/wallpapers/
-
 # Theme state (runtime generated)
 hypr/.theme-mode
 

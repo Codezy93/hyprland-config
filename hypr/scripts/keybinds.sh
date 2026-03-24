@@ -1,26 +1,13 @@
 #!/bin/bash
 # ── Keyboard Shortcuts Cheatsheet ────────────
 
-cat <<'KEYS' | wofi --show dmenu --prompt "⌨ Shortcuts" --width 520 --height 650
+cat <<'KEYS' | wofi --show dmenu --prompt "⌨ Shortcuts" --width 520 --height 580
 ──── Quick Launch ────
 ⌘ + Return           Terminal (Kitty)
 ⌘ + Space            Launcher (Wofi)
-⌘ + B                Brave Browser
 ⌘ + E                Files (Thunar)
 ⌘ + V                Clipboard History
 ⌘ + /                This Cheatsheet
-
-──── App Launchers (⌘+Alt) ────
-⌘ + Alt + C          Cursor
-⌘ + Alt + O          Obsidian
-⌘ + Alt + S          Spotify
-⌘ + Alt + T          Thunderbird
-⌘ + Alt + P          Postman
-⌘ + Alt + D          Docker Desktop
-⌘ + Alt + B          Bitwarden
-⌘ + Alt + Q          Qalculate
-⌘ + Alt + M          MongoDB Compass
-⌘ + Alt + G          Google Chrome
 
 ──── Screenshots ────
 ⌘ + Shift + S        Area Screenshot
@@ -51,13 +38,14 @@ Alt + Tab             Cycle Windows
 ⌘ + Ctrl + ←/→/↑/↓  Resize Window
 
 ──── Workspaces ────
-⌘ + 1  Terminal      ⌘ + 6  Docker
-⌘ + 2  Code          ⌘ + 7  Notes
-⌘ + 3  Browser       ⌘ + 8  Music
-⌘ + 4  Email         ⌘ + 9  Misc
-⌘ + 5  Database      ⌘ + 0  Extra
+⌘ + 1  Terminal      ⌘ + 6  WS 6
+⌘ + 2  WS 2          ⌘ + 7  WS 7
+⌘ + 3  WS 3          ⌘ + 8  WS 8
+⌘ + 4  WS 4          ⌘ + 9  WS 9
+⌘ + 5  WS 5          ⌘ + 0  Extra
 ⌘ + Shift + 1-0      Move to Workspace
-⌘ + S                Scratchpad
+⌘ + S                Scratchpad Toggle
+⌘ + Alt + S          Move to Scratchpad
 
 ──── System ────
 ⌘ + D                Dark/Light Toggle

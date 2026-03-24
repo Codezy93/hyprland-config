@@ -43,17 +43,17 @@ detect_aur_helper() {
     else
         echo ""
         warn "No AUR helper found."
-        ask "Install yay? (y/n)"
+        ask "Install paru? (y/n)"
         read -p "  > " -n 1 -r
         echo ""
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-            info "Installing yay..."
+            info "Installing paru..."
             sudo pacman -S --needed --noconfirm git base-devel >> "$LOG_FILE" 2>&1
-            git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin 2>> "$LOG_FILE"
-            (cd /tmp/yay-bin && makepkg -si --noconfirm) >> "$LOG_FILE" 2>&1
-            rm -rf /tmp/yay-bin
-            AUR_HELPER="yay"
-            info "yay installed."
+            git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin 2>> "$LOG_FILE"
+            (cd /tmp/paru-bin && makepkg -si --noconfirm) >> "$LOG_FILE" 2>&1
+            rm -rf /tmp/paru-bin
+            AUR_HELPER="paru"
+            info "paru installed."
         else
             error "AUR helper required. Exiting."
             exit 1
@@ -153,6 +153,20 @@ install_pkgs "Weather dependencies" \
     jq curl
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PHASE 2: App Installations
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+section "Phase 2 — App Installations"
+
+git clone https://aur.archlinux.org/snapd.git
+cd snapd
+makepkg -si
+sudo systemctl enable --now snapd.socket
+sudo systemctl enable --now snapd.apparmor.service
+sudo ln -s /var/lib/snapd/snap /snap
+sudo snap install snapd
+cd ..
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # PHASE 3: Backup Existing Configs
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 section "Phase 3 — Config Deployment"
@@ -205,6 +219,24 @@ cp "$SCRIPT_DIR/hypr/hypridle.conf"     "$CONFIG_DIR/hypr/"
 cp "$SCRIPT_DIR/hypr/themes/colors.conf" "$CONFIG_DIR/hypr/themes/"
 cp "$SCRIPT_DIR/hypr/scripts/"*.sh      "$CONFIG_DIR/hypr/scripts/"
 chmod +x "$CONFIG_DIR/hypr/scripts/"*.sh
+
+# Wallpapers
+shopt -s nullglob
+wallpapers=("$SCRIPT_DIR/hypr/wallpapers/"*.{png,jpg,jpeg,webp,gif})
+shopt -u nullglob
+if [ ${#wallpapers[@]} -gt 0 ]; then
+    cp "${wallpapers[@]}" "$CONFIG_DIR/hypr/wallpapers/"
+    info "Wallpapers deployed (${#wallpapers[@]} file(s))."
+    # Set the first wallpaper as default if default.png doesn't exist
+    if [ ! -f "$CONFIG_DIR/hypr/wallpapers/default.png" ]; then
+        cp "${wallpapers[0]}" "$CONFIG_DIR/hypr/wallpapers/default.png"
+        info "Set '$(basename "${wallpapers[0]}")' as default wallpaper."
+    fi
+else
+    warn "No wallpapers found in repo. Add images to hypr/wallpapers/ or set one manually:"
+    warn "  cp your-wallpaper.png ~/.config/hypr/wallpapers/default.png"
+fi
+
 info "Hyprland config deployed."
 
 # Waybar
