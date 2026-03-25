@@ -132,7 +132,8 @@ install_pkgs "Audio stack" \
 
 # ── Fonts ─────────────────────────────────────
 install_pkgs "Fonts" \
-    ttf-jetbrains-mono-nerd noto-fonts noto-fonts-emoji \
+    ttf-jetbrains-mono-nerd ttf-caskaydia-cove-nerd \
+    noto-fonts noto-fonts-emoji \
     ttf-font-awesome otf-font-awesome
 
 # ── Cursor Theme ──────────────────────────────
@@ -143,35 +144,38 @@ install_pkgs "Cursor theme" \
 install_pkgs "Theming" \
     nwg-look qt5ct qt6ct
 
-# ── NVIDIA ────────────────────────────────────
-install_pkgs "NVIDIA drivers" \
-    nvidia-dkms nvidia-utils nvidia-settings \
-    lib32-nvidia-utils egl-wayland
-
 # ── Weather Script Dependency ──────────────────
 install_pkgs "Weather dependencies" \
     jq curl
+
+# ── Shell Extras ───────────────────────────────
+install_pkgs "Shell extras" \
+    pokemon-colorscripts-git fastfetch
+
+# ── Screen Recording ─────────────────────────
+install_pkgs "Screen recording" \
+    wf-recorder slurp
+
+# ── Desktop Widgets ────────────────────────────
+install_pkgs "Desktop widgets" \
+    eww-wayland
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # PHASE 2: App Installations
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 section "Phase 2 — App Installations"
 
-git clone https://aur.archlinux.org/snapd.git
-cd snapd
-makepkg -si
-sudo systemctl enable --now snapd.socket
-sudo systemctl enable --now snapd.apparmor.service
-sudo ln -s /var/lib/snapd/snap /snap
-sudo snap install snapd
-cd ..
+# ── Add your app installations here ────────────
+# Example:
+#   install_pkgs "My Apps" \
+#       firefox discord spotify-launcher
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # PHASE 3: Backup Existing Configs
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 section "Phase 3 — Config Deployment"
 
-DIRS_TO_DEPLOY=("hypr" "waybar" "wofi" "dunst" "kitty")
+DIRS_TO_DEPLOY=("hypr" "waybar" "wofi" "dunst" "kitty" "eww")
 BACKUP_DIR="$HOME/.config-backup-$(date +%Y%m%d_%H%M%S)"
 need_backup=false
 
@@ -217,6 +221,7 @@ cp "$SCRIPT_DIR/hypr/autostart.conf"    "$CONFIG_DIR/hypr/"
 cp "$SCRIPT_DIR/hypr/hyprlock.conf"     "$CONFIG_DIR/hypr/"
 cp "$SCRIPT_DIR/hypr/hypridle.conf"     "$CONFIG_DIR/hypr/"
 cp "$SCRIPT_DIR/hypr/themes/colors.conf" "$CONFIG_DIR/hypr/themes/"
+[ -f "$SCRIPT_DIR/hypr/nvidia.conf" ] && cp "$SCRIPT_DIR/hypr/nvidia.conf" "$CONFIG_DIR/hypr/"
 cp "$SCRIPT_DIR/hypr/scripts/"*.sh      "$CONFIG_DIR/hypr/scripts/"
 chmod +x "$CONFIG_DIR/hypr/scripts/"*.sh
 
@@ -227,9 +232,13 @@ shopt -u nullglob
 if [ ${#wallpapers[@]} -gt 0 ]; then
     cp "${wallpapers[@]}" "$CONFIG_DIR/hypr/wallpapers/"
     info "Wallpapers deployed (${#wallpapers[@]} file(s))."
-    # Set the first wallpaper as default if default.png doesn't exist
-    if [ ! -f "$CONFIG_DIR/hypr/wallpapers/default.png" ]; then
-        cp "${wallpapers[0]}" "$CONFIG_DIR/hypr/wallpapers/default.png"
+    # Set the first wallpaper as default if no default.* exists
+    shopt -s nullglob
+    existing_defaults=("$CONFIG_DIR/hypr/wallpapers/default".{png,jpg,jpeg,webp,gif})
+    shopt -u nullglob
+    if [ ${#existing_defaults[@]} -eq 0 ]; then
+        ext="${wallpapers[0]##*.}"
+        cp "${wallpapers[0]}" "$CONFIG_DIR/hypr/wallpapers/default.${ext}"
         info "Set '$(basename "${wallpapers[0]}")' as default wallpaper."
     fi
 else
@@ -262,45 +271,59 @@ cp "$SCRIPT_DIR/kitty/kitty.conf"       "$CONFIG_DIR/kitty/"
 info "Kitty config deployed."
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# PHASE 4: NVIDIA Configuration
+# PHASE 4: NVIDIA Configuration (Optional)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 section "Phase 4 — NVIDIA Setup"
 
-# Check kernel params
-if grep -q "nvidia_drm.modeset=1" /proc/cmdline 2>/dev/null; then
-    info "nvidia_drm.modeset=1 is set."
-else
-    warn "nvidia_drm.modeset=1 NOT found in kernel params."
-    echo ""
-    echo -e "  Add to your bootloader:"
-    echo -e "  ${CYAN}GRUB:${NC} Edit /etc/default/grub"
-    echo -e "        GRUB_CMDLINE_LINUX_DEFAULT=\"... nvidia_drm.modeset=1\""
-    echo -e "        Then run: sudo grub-mkconfig -o /boot/grub/grub.cfg"
-    echo ""
-    echo -e "  ${CYAN}systemd-boot:${NC} Edit /boot/loader/entries/*.conf"
-    echo -e "        options ... nvidia_drm.modeset=1"
-    echo ""
-fi
+ask "Do you have an NVIDIA GPU? (y/n)"
+read -p "  > " -n 1 -r
+echo ""
+if [[ $REPLY =~ ^[Yy]$ ]]; then
 
-# Check mkinitcpio modules
-if grep -q "nvidia" /etc/mkinitcpio.conf 2>/dev/null; then
-    info "NVIDIA modules found in mkinitcpio.conf."
-else
-    warn "NVIDIA modules not in mkinitcpio.conf."
-    echo -e "  Add to MODULES: ${CYAN}(nvidia nvidia_modeset nvidia_uvm nvidia_drm)${NC}"
-    echo -e "  Then run: ${CYAN}sudo mkinitcpio -P${NC}"
-    echo ""
-fi
+    # Install NVIDIA packages
+    install_pkgs "NVIDIA drivers" \
+        nvidia-dkms nvidia-utils nvidia-settings \
+        lib32-nvidia-utils egl-wayland
 
-# pacman hook for NVIDIA
-HOOK_DIR="/etc/pacman.d/hooks"
-if [ ! -f "$HOOK_DIR/nvidia.hook" ]; then
-    ask "Create pacman hook for auto-rebuilding NVIDIA modules on kernel update? (y/n)"
-    read -p "  > " -n 1 -r
-    echo ""
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        sudo mkdir -p "$HOOK_DIR"
-        sudo tee "$HOOK_DIR/nvidia.hook" > /dev/null << 'HOOKEOF'
+    # Enable nvidia.conf in hyprland config
+    sed -i 's|^# source = ~/.config/hypr/nvidia.conf|source = ~/.config/hypr/nvidia.conf|' "$CONFIG_DIR/hypr/hyprland.conf"
+    info "NVIDIA env vars enabled in hyprland.conf"
+
+    # Check kernel params
+    if grep -q "nvidia_drm.modeset=1" /proc/cmdline 2>/dev/null; then
+        info "nvidia_drm.modeset=1 is set."
+    else
+        warn "nvidia_drm.modeset=1 NOT found in kernel params."
+        echo ""
+        echo -e "  Add to your bootloader:"
+        echo -e "  ${CYAN}GRUB:${NC} Edit /etc/default/grub"
+        echo -e "        GRUB_CMDLINE_LINUX_DEFAULT=\"... nvidia_drm.modeset=1\""
+        echo -e "        Then run: sudo grub-mkconfig -o /boot/grub/grub.cfg"
+        echo ""
+        echo -e "  ${CYAN}systemd-boot:${NC} Edit /boot/loader/entries/*.conf"
+        echo -e "        options ... nvidia_drm.modeset=1"
+        echo ""
+    fi
+
+    # Check mkinitcpio modules
+    if grep -q "nvidia" /etc/mkinitcpio.conf 2>/dev/null; then
+        info "NVIDIA modules found in mkinitcpio.conf."
+    else
+        warn "NVIDIA modules not in mkinitcpio.conf."
+        echo -e "  Add to MODULES: ${CYAN}(nvidia nvidia_modeset nvidia_uvm nvidia_drm)${NC}"
+        echo -e "  Then run: ${CYAN}sudo mkinitcpio -P${NC}"
+        echo ""
+    fi
+
+    # pacman hook for NVIDIA
+    HOOK_DIR="/etc/pacman.d/hooks"
+    if [ ! -f "$HOOK_DIR/nvidia.hook" ]; then
+        ask "Create pacman hook for auto-rebuilding NVIDIA modules on kernel update? (y/n)"
+        read -p "  > " -n 1 -r
+        echo ""
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            sudo mkdir -p "$HOOK_DIR"
+            sudo tee "$HOOK_DIR/nvidia.hook" > /dev/null << 'HOOKEOF'
 [Trigger]
 Operation=Install
 Operation=Upgrade
@@ -317,8 +340,12 @@ When=PostTransaction
 NeedsTargets
 Exec=/bin/sh -c 'while read -r trg; do case $trg in linux*) exit 0; esac; done; /usr/bin/mkinitcpio -P'
 HOOKEOF
-        info "NVIDIA pacman hook created."
+            info "NVIDIA pacman hook created."
+        fi
     fi
+
+else
+    info "Skipping NVIDIA setup."
 fi
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -372,6 +399,35 @@ if [ "$SHELL" != "/bin/zsh" ] && [ "$SHELL" != "/usr/bin/zsh" ]; then
         info "Default shell changed to zsh. Takes effect on next login."
     fi
 fi
+
+# ── Pokemon Colorscripts ────────────────────────
+if command -v pokemon-colorscripts &>/dev/null; then
+    RC_FILE=""
+    if [ -f "$HOME/.zshrc" ]; then
+        RC_FILE="$HOME/.zshrc"
+    elif [ -f "$HOME/.bashrc" ]; then
+        RC_FILE="$HOME/.bashrc"
+    fi
+
+    if [ -n "$RC_FILE" ]; then
+        if ! grep -q "pokemon-colorscripts" "$RC_FILE"; then
+            echo "" >> "$RC_FILE"
+            echo "# Dusk Garden — random pokemon on shell start" >> "$RC_FILE"
+            echo "pokemon-colorscripts -r --no-title" >> "$RC_FILE"
+            info "Pokemon colorscripts added to $RC_FILE"
+        else
+            info "Pokemon colorscripts already in $RC_FILE — skipped."
+        fi
+    else
+        warn "No .zshrc or .bashrc found. Add manually: pokemon-colorscripts -r --no-title"
+    fi
+fi
+
+# ── Eww Widgets ────────────────────────────────
+mkdir -p "$CONFIG_DIR/eww"
+cp "$SCRIPT_DIR/eww/eww.yuck" "$CONFIG_DIR/eww/"
+cp "$SCRIPT_DIR/eww/eww.scss" "$CONFIG_DIR/eww/"
+info "Eww widget config deployed."
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # DONE

@@ -11,9 +11,9 @@ case "$selected" in
     "󰍃 Logout")
         hyprctl dispatch exit ;;
     "󰤄 Suspend")
-        systemctl suspend ;;
+        loginctl suspend ;;
     "󰜉 Reboot")
-        systemctl reboot ;;
+        loginctl reboot ;;
     "⏻ Shutdown")
-        systemctl poweroff ;;
+        loginctl poweroff ;;
 esac

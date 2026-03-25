@@ -5,7 +5,7 @@ window {
     border: 1px solid rgba(72, 72, 74, 0.4);
     border-radius: 16px;
     background-color: rgba(28, 28, 30, 0.85);
-    font-family: "SF Pro Display", "Inter", "JetBrainsMono Nerd Font", sans-serif;
+    font-family: "JetBrainsMono Nerd Font", "Inter", "SF Pro Display", sans-serif;
     font-size: 14px;
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
 }

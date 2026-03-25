@@ -1,0 +1,56 @@
+// ── Dusk Garden — Eww Widget Styles ──────────
+
+$bg:     rgba(28, 28, 30, 0.72);
+$border: rgba(72, 72, 74, 0.35);
+$fg:     #FCFCFC;
+$mint:   #99E1D9;
+$rose:   #B48291;
+$muted:  #8E8E93;
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Inter", sans-serif;
+    font-size: 13px;
+}
+
+.clock-widget {
+    background: $bg;
+    border: 1px solid $border;
+    border-radius: 16px;
+    padding: 16px 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid rgba(153, 225, 217, 0.1);
+}
+
+.time {
+    color: $fg;
+    font-size: 36px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.date {
+    color: $muted;
+    font-size: 11px;
+    margin-top: 2px;
+    margin-bottom: 12px;
+}
+
+.stats {
+    border-top: 1px solid $border;
+    padding-top: 10px;
+    margin-top: 4px;
+}
+
+.stat-item {
+    color: $muted;
+}
+
+.stat-icon {
+    color: $mint;
+    font-size: 13px;
+}
+
+.stat-val {
+    color: $fg;
+    font-size: 12px;
+}

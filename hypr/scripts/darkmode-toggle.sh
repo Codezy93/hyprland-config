@@ -44,6 +44,27 @@ EOF
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-light' 2>/dev/null
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita' 2>/dev/null
 
+    # Waybar colors
+    sed -i \
+        -e 's/@define-color bg      .*/@define-color bg      #F5F2F0;/' \
+        -e 's/@define-color bg_alt  .*/@define-color bg_alt  #E8E4E1;/' \
+        -e 's/@define-color surface .*/@define-color surface #DDD9D5;/' \
+        -e 's/@define-color fg      .*/@define-color fg      #1E1B23;/' \
+        -e 's/@define-color rose    .*/@define-color rose    #9E6B7A;/' \
+        -e 's/@define-color cream   .*/@define-color cream   #D4A84B;/' \
+        -e 's/@define-color mint    .*/@define-color mint    #5BAB9F;/' \
+        -e 's/@define-color plum    .*/@define-color plum    #5D576B;/' \
+        -e 's/@define-color border  .*/@define-color border  #D1CCC8;/' \
+        -e 's/@define-color muted   .*/@define-color muted   #8A8494;/' \
+        "$WAYBAR_STYLE"
+
+    # Dunst colors
+    sed -i \
+        -e '/^\[urgency_low\]/,/^\[/{s/background = .*/background = "#F5F2F0DD"/;s/foreground = .*/foreground = "#1E1B23"/;s/highlight = .*/highlight = "#5BAB9F"/;s/frame_color = .*/frame_color = "#D1CCC866"/;}' \
+        -e '/^\[urgency_normal\]/,/^\[/{s/background = .*/background = "#F5F2F0DD"/;s/foreground = .*/foreground = "#1E1B23"/;s/highlight = .*/highlight = "#5BAB9F"/;s/frame_color = .*/frame_color = "#D1CCC866"/;}' \
+        -e '/^\[urgency_critical\]/,${s/background = .*/background = "#F5F2F0EE"/;s/foreground = .*/foreground = "#1E1B23"/;s/highlight = .*/highlight = "#9E6B7A"/;s/frame_color = .*/frame_color = "#9E6B7A66"/;}' \
+        "$DUNST_CONF"
+
     # Kitty
     kitty @ set-colors --all \
         foreground=#1E1B23 \
@@ -97,6 +118,27 @@ EOF
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' 2>/dev/null
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita:dark' 2>/dev/null
 
+    # Waybar colors
+    sed -i \
+        -e 's/@define-color bg      .*/@define-color bg      #1C1C1E;/' \
+        -e 's/@define-color bg_alt  .*/@define-color bg_alt  #2C2C2E;/' \
+        -e 's/@define-color surface .*/@define-color surface #3A3A3C;/' \
+        -e 's/@define-color fg      .*/@define-color fg      #FCFCFC;/' \
+        -e 's/@define-color rose    .*/@define-color rose    #B48291;/' \
+        -e 's/@define-color cream   .*/@define-color cream   #FFFAE3;/' \
+        -e 's/@define-color mint    .*/@define-color mint    #99E1D9;/' \
+        -e 's/@define-color plum    .*/@define-color plum    #5D576B;/' \
+        -e 's/@define-color border  .*/@define-color border  #48484A;/' \
+        -e 's/@define-color muted   .*/@define-color muted   #8E8E93;/' \
+        "$WAYBAR_STYLE"
+
+    # Dunst colors
+    sed -i \
+        -e '/^\[urgency_low\]/,/^\[/{s/background = .*/background = "#1C1C1EDD"/;s/foreground = .*/foreground = "#FCFCFC"/;s/highlight = .*/highlight = "#99E1D9"/;s/frame_color = .*/frame_color = "#48484A66"/;}' \
+        -e '/^\[urgency_normal\]/,/^\[/{s/background = .*/background = "#1C1C1EDD"/;s/foreground = .*/foreground = "#FCFCFC"/;s/highlight = .*/highlight = "#99E1D9"/;s/frame_color = .*/frame_color = "#48484A66"/;}' \
+        -e '/^\[urgency_critical\]/,${s/background = .*/background = "#1C1C1EEE"/;s/foreground = .*/foreground = "#FCFCFC"/;s/highlight = .*/highlight = "#B48291"/;s/frame_color = .*/frame_color = "#B4829166"/;}' \
+        "$DUNST_CONF"
+
     # Kitty
     kitty @ set-colors --all \
         foreground=#FCFCFC \
@@ -126,5 +168,6 @@ fi
 # Save state
 echo "$NEW_MODE" > "$STATE_FILE"
 
-# Reload waybar (picks up CSS changes via Hyprland reload)
+# Reload waybar and dunst
 killall -SIGUSR2 waybar 2>/dev/null
+killall -SIGUSR1 dunst 2>/dev/null

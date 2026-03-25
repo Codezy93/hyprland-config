@@ -14,6 +14,9 @@ cat <<'KEYS' | wofi --show dmenu --prompt "⌨ Shortcuts" --width 520 --height 5
 ⌘ + Shift + 3        Full Screenshot
 ⌘ + Shift + 4        Area Screenshot
 
+──── Recording ────
+⌘ + Shift + R        Toggle Screen Recording
+
 ──── Windows ────
 ⌘ + Q                Close Window
 ⌘ + F                Fullscreen

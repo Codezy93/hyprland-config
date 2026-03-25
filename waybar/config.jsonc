@@ -29,6 +29,7 @@
         "disk",
         "hyprland/language",
         "battery",
+        "keyboard-state",
         "custom/dunst",
         "custom/darkmode",
         "tray",
@@ -37,7 +38,7 @@
 
     // ── Left ────────────────────────────────
     "custom/launcher": {
-        "format": "  ",
+        "format": "󰀻 ",
         "on-click": "wofi --show drun",
         "tooltip-format": "Applications"
     },
@@ -194,6 +195,17 @@
         "format-plugged": "󰂄",
         "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
         "tooltip-format": "Battery: {capacity}%  {time}"
+    },
+
+    "keyboard-state": {
+        "capslock": true,
+        "numlock": true,
+        "format": "{icon}",
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
+        },
+        "tooltip-format": "Caps: {capslock}\nNum: {numlock}"
     },
 
     "custom/dunst": {

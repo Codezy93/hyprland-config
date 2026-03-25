@@ -12,7 +12,7 @@
 @define-color muted   #8E8E93;
 
 * {
-    font-family: "SF Pro Display", "Inter", "JetBrainsMono Nerd Font", sans-serif;
+    font-family: "JetBrainsMono Nerd Font", "Inter", "SF Pro Display", sans-serif;
     font-size: 13px;
     min-height: 0;
     border: none;
@@ -58,7 +58,8 @@ window#waybar > box {
 #custom-weather,
 #custom-media,
 #custom-dunst,
-#custom-darkmode {
+#custom-darkmode,
+#keyboard-state {
     padding: 0 7px;
     color: @muted;
     background: transparent;
@@ -186,6 +187,19 @@ window#waybar > box {
 #language { color: @muted; }
 #custom-weather { color: @mint; }
 #custom-dunst { color: @muted; }
+
+/* ── Keyboard State ──────────────────────────── */
+
+#keyboard-state {
+    color: alpha(@muted, 0.3);
+    font-size: 11px;
+    padding: 0 5px;
+}
+
+#keyboard-state.locked {
+    color: @cream;
+    text-shadow: 0 0 6px alpha(@cream, 0.4);
+}
 
 /* ── Dark Mode Toggle ────────────────────────── */
 

@@ -8,7 +8,16 @@ if [ ! -d "$WALLPAPER_DIR" ]; then
     exit 1
 fi
 
-selected=$(ls "$WALLPAPER_DIR" | wofi --show dmenu --prompt "Wallpaper")
+shopt -s nullglob
+images=("$WALLPAPER_DIR"/*.{png,jpg,jpeg,webp,gif})
+shopt -u nullglob
+
+if [ ${#images[@]} -eq 0 ]; then
+    notify-send "Wallpaper" "No images found in $WALLPAPER_DIR"
+    exit 1
+fi
+
+selected=$(printf '%s\n' "${images[@]##*/}" | wofi --show dmenu --prompt "Wallpaper")
 
 if [ -n "$selected" ]; then
     swww img "$WALLPAPER_DIR/$selected" \

@@ -24,7 +24,7 @@
     sort = yes
     idle_threshold = 120
 
-    font = SF Pro Display 11
+    font = JetBrainsMono Nerd Font 11
     line_height = 4
     markup = full
     format = "<b>%s</b>\n<span size='small'>%b</span>"

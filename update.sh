@@ -38,7 +38,7 @@ echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     BACKUP_DIR="$HOME/.config-backup-$(date +%Y%m%d_%H%M%S)"
     mkdir -p "$BACKUP_DIR"
-    for dir in hypr waybar wofi dunst kitty; do
+    for dir in hypr waybar wofi dunst kitty eww; do
         if [ -d "$CONFIG_DIR/$dir" ]; then
             cp -r "$CONFIG_DIR/$dir" "$BACKUP_DIR/"
             info "Backed up $dir → $BACKUP_DIR/$dir"
@@ -63,6 +63,7 @@ cp "$SCRIPT_DIR/hypr/autostart.conf"     "$CONFIG_DIR/hypr/"
 cp "$SCRIPT_DIR/hypr/hyprlock.conf"      "$CONFIG_DIR/hypr/"
 cp "$SCRIPT_DIR/hypr/hypridle.conf"      "$CONFIG_DIR/hypr/"
 cp "$SCRIPT_DIR/hypr/themes/colors.conf" "$CONFIG_DIR/hypr/themes/"
+[ -f "$SCRIPT_DIR/hypr/nvidia.conf" ] && cp "$SCRIPT_DIR/hypr/nvidia.conf" "$CONFIG_DIR/hypr/"
 cp "$SCRIPT_DIR/hypr/scripts/"*.sh       "$CONFIG_DIR/hypr/scripts/"
 chmod +x "$CONFIG_DIR/hypr/scripts/"*.sh
 info "Hyprland"
@@ -98,12 +99,19 @@ mkdir -p "$CONFIG_DIR/kitty"
 cp "$SCRIPT_DIR/kitty/kitty.conf" "$CONFIG_DIR/kitty/"
 info "Kitty"
 
+# Eww
+mkdir -p "$CONFIG_DIR/eww"
+cp "$SCRIPT_DIR/eww/eww.yuck" "$CONFIG_DIR/eww/"
+cp "$SCRIPT_DIR/eww/eww.scss" "$CONFIG_DIR/eww/"
+info "Eww"
+
 # ── Reload Running Services ─────────────────────
 section "Reloading"
 
 hyprctl reload 2>/dev/null && info "Hyprland reloaded" || warn "Hyprland not running — skipped"
 killall -SIGUSR2 waybar 2>/dev/null && info "Waybar reloaded" || warn "Waybar not running — skipped"
 killall -SIGUSR1 dunst 2>/dev/null && info "Dunst reloaded" || warn "Dunst not running — skipped"
+eww reload 2>/dev/null && info "Eww reloaded" || warn "Eww not running — skipped"
 
 echo ""
 echo -e "  ${GREEN}${BOLD}Done.${NC}"
