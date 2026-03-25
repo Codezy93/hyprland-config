@@ -51,3 +51,4 @@ __pycache__/
 # preview.html
 
 .claude
+*.log

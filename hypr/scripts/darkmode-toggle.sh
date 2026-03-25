@@ -102,14 +102,14 @@ $cream    = rgba(FFFAE3ee)
 $mint     = rgba(99E1D9ee)
 $neon     = rgba(99E1D9ff)
 $plum     = rgba(5D576Bee)
-$bg       = rgba(1E1B23ee)
-$bg_alt   = rgba(2A2631ee)
-$surface  = rgba(312C3Bee)
-$border   = rgba(3D3847ee)
-$muted    = rgba(8A8494ee)
+$bg       = rgba(1C1C1Eee)
+$bg_alt   = rgba(2C2C2Eee)
+$surface  = rgba(3A3A3Cee)
+$border   = rgba(48484Aee)
+$muted    = rgba(8E8E93ee)
 
 $active_border   = rgba(B48291ee) rgba(99E1D9ee) 45deg
-$inactive_border = rgba(3D3847ee)
+$inactive_border = rgba(48484Aee)
 EOF
 
     hyprctl reload
