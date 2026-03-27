@@ -13,20 +13,8 @@ write_file(){
 }
 
 install_package_manager(){
-    sudo pacman -S --needed git base-devel
-    git clone https://aur.archlinux.org/yay.git
-    cd yay
-    makepkg -si
-    cd ..
-    git clone https://aur.archlinux.org/snapd.git
-    cd snapd
-    makepkg -si
-    sudo systemctl enable --now snapd.socket
-    sudo ln -s /var/lib/snapd/snap /snap
-    cd ..
-    sudo pacman -S podman
-    write_file 0
-    sudo reboot now
+    sudo pacman -S --needed git base-devel yay snapd podman
+    # sudo reboot now
 }
 
 install_from_binary(){
@@ -52,12 +40,13 @@ install_from_script(){
 install_hyprland(){
     sudo pacman -S hyprland hyprlock hypridle hyprutils hyprpaper \
     xdg-desktop-portal-hyprland waybar wofi dunst libnotify kitty mpvpaper \
-    thunar thunar-archive-plugin thunar-volman apple-cursor eww-wayland \
+    thunar thunar-archive-plugin thunar-volman apple_cursor \
     pipewire pipewire-pulse pipewire-alsa wireplumber network-manager-applet blueman\
-    nwg-look qt5ct qt6ct wl-clipboard cliphist grimblast-git jq curl \
-    wf-recorder slurp ttf-jetbrains-mono-nerd ttf-caskaydia-cove-nerd \
+    nwg-look qt5ct qt6ct wl-clipboard cliphist jq curl \
+    wf-recorder slurp ttf-jetbrains-mono-nerd \
     noto-fonts noto-fonts-emoji ttf-font-awesome otf-font-awesome \
-    brightnessctl playerctl pavucontrol polkit-kde-agent
+    brightnessctl playerctl pavucontrol polkit-kde-agent ttf-cascadia-code-nerd
+    # eww-wayland grimblast-git ttf-caskaydia-cove-nerd
 }
 
 install_apps(){
