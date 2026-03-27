@@ -34,8 +34,10 @@ $surface  = rgba(DDD9D5ee)
 $border   = rgba(D1CCC8ee)
 $muted    = rgba(8A8494ee)
 
-$active_border   = rgba(9E6B7Aee) rgba(5BAB9Fee) 45deg
-$inactive_border = rgba(D1CCC8ee)
+general {
+    col.active_border = rgba(9E6B7Aee) rgba(5BAB9Fee) 45deg
+    col.inactive_border = rgba(D1CCC8ee)
+}
 EOF
 
     hyprctl reload
@@ -108,8 +110,10 @@ $surface  = rgba(3A3A3Cee)
 $border   = rgba(48484Aee)
 $muted    = rgba(8E8E93ee)
 
-$active_border   = rgba(B48291ee) rgba(99E1D9ee) 45deg
-$inactive_border = rgba(48484Aee)
+general {
+    col.active_border = rgba(B48291ee) rgba(99E1D9ee) 45deg
+    col.inactive_border = rgba(48484Aee)
+}
 EOF
 
     hyprctl reload

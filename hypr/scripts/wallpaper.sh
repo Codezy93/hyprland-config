@@ -9,20 +9,19 @@ if [ ! -d "$WALLPAPER_DIR" ]; then
 fi
 
 shopt -s nullglob
-images=("$WALLPAPER_DIR"/*.{png,jpg,jpeg,webp,gif})
+videos=("$WALLPAPER_DIR"/*.{mp4,gif})
 shopt -u nullglob
 
-if [ ${#images[@]} -eq 0 ]; then
-    notify-send "Wallpaper" "No images found in $WALLPAPER_DIR"
+if [ ${#videos[@]} -eq 0 ]; then
+    notify-send "Wallpaper" "No videos found in $WALLPAPER_DIR"
     exit 1
 fi
 
-selected=$(printf '%s\n' "${images[@]##*/}" | wofi --show dmenu --prompt "Wallpaper")
+selected=$(printf '%s\n' "${videos[@]##*/}" | wofi --show dmenu --prompt "Wallpaper")
 
 if [ -n "$selected" ]; then
-    swww img "$WALLPAPER_DIR/$selected" \
-        --transition-type fade \
-        --transition-duration 2 \
-        --transition-fps 60
+    killall mpvpaper 2>/dev/null
+    sleep 0.5
+    mpvpaper -o "loop" '*' "$WALLPAPER_DIR/$selected" &
     notify-send "Wallpaper" "Set to $selected"
 fi
