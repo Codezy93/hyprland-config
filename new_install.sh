@@ -13,13 +13,22 @@ write_file(){
 }
 
 install_package_manager(){
-    sudo pacman -S --needed git base-devel yay snapd podman
-    # sudo reboot now
+    sudo pacman -S --needed --noconfirm git base-devel
+    git clone https://aur.archlinux.org/yay.git /tmp/yay-build
+    cd /tmp/yay-build
+    makepkg -si --noconfirm
+    cd -
+    rm -rf /tmp/yay-build
+    yay -S --noconfirm snapd
+    sudo systemctl enable --now snapd.socket
+    sudo ln -sf /var/lib/snapd/snap /snap
+    sudo pacman -S --noconfirm podman
+    sudo reboot now
 }
 
 install_from_binary(){
     local url="$1"
-    curl -O "$url"
+    curl -fsSL -O "$url"
     IFS='/' read -ra name <<< "$url"
     name="${name[-1]}"
     sudo tar -C /opt -xzf "${name}"
@@ -29,29 +38,35 @@ install_from_binary(){
 }
 
 install_from_script(){
-    curl -O "$1"
-    IFS='/' read -ra name <<< "$1"
-    local name="${name[-1]}"
-    chmod +x "${name}"
-    ./"${name}"
-    rm ./"${name}"
+    local url="$1"
+    shift
+    local tmpfile
+    tmpfile="$(mktemp)"
+    curl -fsSL -o "$tmpfile" "$url"
+    chmod +x "$tmpfile"
+    "$tmpfile" "$@"
+    rm -f "$tmpfile"
 }
 
 install_hyprland(){
-    sudo pacman -S hyprland hyprlock hypridle hyprutils hyprpaper \
-    xdg-desktop-portal-hyprland waybar wofi dunst libnotify kitty mpvpaper \
-    thunar thunar-archive-plugin thunar-volman apple_cursor \
-    pipewire pipewire-pulse pipewire-alsa wireplumber network-manager-applet blueman\
-    nwg-look qt5ct qt6ct wl-clipboard cliphist jq curl \
-    wf-recorder slurp ttf-jetbrains-mono-nerd \
-    noto-fonts noto-fonts-emoji ttf-font-awesome otf-font-awesome \
-    brightnessctl playerctl pavucontrol polkit-kde-agent ttf-cascadia-code-nerd
-    # eww-wayland grimblast-git ttf-caskaydia-cove-nerd
+    # Official repo packages
+    sudo pacman -S --needed --noconfirm \
+        hyprland hyprlock hypridle hyprutils hyprpaper \
+        xdg-desktop-portal-hyprland waybar wofi dunst libnotify kitty \
+        thunar thunar-archive-plugin thunar-volman \
+        pipewire pipewire-pulse pipewire-alsa wireplumber network-manager-applet blueman \
+        nwg-look qt5ct qt6ct wl-clipboard cliphist jq curl \
+        wf-recorder slurp ttf-jetbrains-mono-nerd \
+        noto-fonts noto-fonts-emoji ttf-font-awesome otf-font-awesome \
+        brightnessctl playerctl pavucontrol polkit-kde-agent ttf-cascadia-code-nerd
+
+    # AUR packages
+    yay -S --needed --noconfirm mpvpaper apple-cursor
 }
 
 install_apps(){
-    sudo pacman -S tmux zsh neovim github-cli
-    yay -S brave-bin
+    sudo pacman -S --needed --noconfirm tmux zsh neovim github-cli
+    yay -S --needed --noconfirm brave-bin
     sudo snap install obsidian --classic
     sudo snap install qalculate
     sudo snap install dbgate
@@ -59,9 +74,9 @@ install_apps(){
     sudo snap install thunderbird
     sudo snap install spotify
     sudo snap install code --classic
-    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    install_from_script https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    curl -fsSL https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    install_from_script https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -b -p "$HOME/miniconda3"
     install_from_binary https://github.com/Kitware/CMake/releases/download/v4.3.0/cmake-4.3.0-linux-x86_64.tar.gz
     install_from_binary https://download.oracle.com/java/26/latest/jdk-26_linux-x64_bin.tar.gz
     install_from_binary https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-8.0.46-src.tar.gz
@@ -113,7 +128,7 @@ EOF
 }
 
 install_nvidia(){
-    sudo pacman -S nvidia-dkms nvidia-utils nvidia-settings lib32-nvidia-utils egl-wayland
+    sudo pacman -S --needed --noconfirm nvidia-dkms nvidia-utils nvidia-settings lib32-nvidia-utils egl-wayland
     sed -i 's|^# source = ~/.config/hypr/nvidia.conf|source = ~/.config/hypr/nvidia.conf|' "$CONFIG_DIR/hypr/hyprland.conf"
     if grep -q "nvidia_drm.modeset=1" /proc/cmdline 2>/dev/null; then
         echo "nvidia_drm.modeset=1 is set."
