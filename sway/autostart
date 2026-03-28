@@ -1,7 +1,7 @@
 # ── Autostart Applications ───────────────────
 
 # Wallpaper (mpvpaper — supports mp4/gif video wallpapers)
-exec mpvpaper -o "loop" '*' ~/.config/sway/wallpapers/default.mp4
+exec sh -c '[ -f ~/.config/sway/wallpapers/default.mp4 ] && mpvpaper -o "loop" '"'"'*'"'"' ~/.config/sway/wallpapers/default.mp4'
 
 # Status bar
 exec waybar
@@ -16,20 +16,26 @@ exec dunst
 exec wl-paste --type text --watch cliphist store
 exec wl-paste --type image --watch cliphist store
 
-# Authentication agent
-exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+# Authentication agent — try known paths across Ubuntu versions
+exec sh -c 'for agent in \
+    /usr/libexec/polkit-gnome-authentication-agent-1 \
+    /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 \
+    /usr/lib/x86_64-linux-gnu/libexec/polkit-gnome-authentication-agent-1; do \
+    [ -x "$agent" ] && exec "$agent"; done'
 
 # Idle daemon (swayidle)
 exec swayidle -w \
-    timeout 300 'swaylock -f' \
+    timeout 300 'swaylock -C ~/.config/sway/swaylock.conf' \
     timeout 480 'swaymsg "output * power off"' \
     resume 'swaymsg "output * power on"' \
     timeout 1800 'systemctl suspend' \
-    before-sleep 'swaylock -f'
+    before-sleep 'swaylock -C ~/.config/sway/swaylock.conf'
 
-# XDG Desktop Portal
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+# XDG Desktop Portal + app launcher environment
+# XDG_DATA_DIRS must include snap's desktop path so wofi can find snap app .desktop files
+exec sh -c 'export XDG_DATA_DIRS="/var/lib/snapd/desktop:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}" && \
+    dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway XDG_DATA_DIRS'
+exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_DATA_DIRS
 
 # Desktop Widgets (eww) — uncomment if you built eww from source
 # exec eww daemon && eww open clock-widget

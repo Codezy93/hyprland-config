@@ -7,13 +7,13 @@ selected=$(echo -e "$entries" | wofi --show dmenu --prompt "Power" --width 250 -
 
 case "$selected" in
     "󰌾 Lock")
-        swaylock -f -C ~/.config/sway/swaylock.conf ;;
+        swaylock -C ~/.config/sway/swaylock.conf ;;
     "󰍃 Logout")
         swaymsg exit ;;
     "󰤄 Suspend")
-        loginctl suspend ;;
+        systemctl suspend ;;
     "󰜉 Reboot")
-        loginctl reboot ;;
+        systemctl reboot ;;
     "⏻ Shutdown")
-        loginctl poweroff ;;
+        systemctl poweroff ;;
 esac

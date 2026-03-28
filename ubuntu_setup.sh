@@ -83,6 +83,14 @@ install_sway_stack() {
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 install_cli_tools() {
     log "Installing CLI tools..."
+    # gh (GitHub CLI) requires its own apt repo — not in Ubuntu default repos
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+        | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+    sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] \
+        https://cli.github.com/packages stable main" \
+        | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+    sudo apt update
     sudo apt install -y \
         tmux zsh neovim python3-pip \
         build-essential gcc git gh curl wget jq \
@@ -163,11 +171,13 @@ EOF
 
     log "Installing nvm + Node 24..."
     curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
-    # Source nvm in the current process then install Node
+    # nvm uses unbound variables internally — must disable set -u before sourcing
     export NVM_DIR="$HOME/.nvm"
+    set +u
     # shellcheck source=/dev/null
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     nvm install 24
+    set -u
 
     log "Installing Miniconda..."
     local CONDA_INSTALLER="/tmp/Miniconda3-latest-Linux-x86_64.sh"
@@ -227,6 +237,19 @@ deploy_configs() {
     mkdir -p "$CONFIG_DIR/eww"
     cp "$SCRIPT_DIR/eww/eww.yuck"         "$CONFIG_DIR/eww/"
     cp "$SCRIPT_DIR/eww/eww.scss"         "$CONFIG_DIR/eww/"
+
+    # Ensure snap app .desktop files are visible to wofi
+    # Snap installs .desktop files to /var/lib/snapd/desktop, which is not in
+    # the default XDG_DATA_DIRS when starting Sway from a TTY.
+    if ! grep -q "snapd/desktop" "$HOME/.profile" 2>/dev/null; then
+        cat >> "$HOME/.profile" << 'EOF'
+
+# Snap desktop files for wofi app launcher
+if [ -d /var/lib/snapd/desktop ]; then
+    export XDG_DATA_DIRS="/var/lib/snapd/desktop:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+fi
+EOF
+    fi
 
     # Set zsh as default shell
     if command -v zsh &>/dev/null; then
