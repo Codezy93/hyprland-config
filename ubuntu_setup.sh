@@ -122,6 +122,8 @@ install_apps() {
     sudo snap install spotify
     sudo snap install code --classic
 
+    sudo apt-get install mpv
+
     # Add Docker's official GPG key:
     sudo apt update
     sudo apt install ca-certificates curl
@@ -228,6 +230,8 @@ enable_services() {
     systemctl --user enable --now wireplumber.service >> "$LOG_FILE" 2>&1 || true
     systemctl --user start docker-desktop
     systemctl --user enable docker-desktop
+
+    mpvpaper ALL ~/.config/sway/wallpapers/minecraft-northern-light.mp4
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
