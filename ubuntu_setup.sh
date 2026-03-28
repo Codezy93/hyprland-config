@@ -96,15 +96,11 @@ install_cli_tools() {
     log "Installing latest Kitty terminal..."
     curl -fsSL https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
 
-    # Install cliphist (clipboard history for Wayland)
-    log "Installing cliphist..."
-    if ! command -v cliphist &>/dev/null; then
-        CLIPHIST_VERSION="v0.6.1"
-        curl -fsSL -o /tmp/cliphist \
-            "https://github.com/sentriz/cliphist/releases/download/${CLIPHIST_VERSION}/cliphist-linux-amd64"
-        chmod +x /tmp/cliphist
-        sudo mv /tmp/cliphist /usr/local/bin/cliphist
-    fi
+    git clone --single-branch https://github.com/GhostNaN/mpvpaper
+    cd mpvpaper
+    meson setup build --prefix=/usr/local
+    ninja -C build
+    ninja -C build install
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -125,6 +121,35 @@ install_apps() {
     sudo snap install thunderbird
     sudo snap install spotify
     sudo snap install code --classic
+
+    # Add Docker's official GPG key:
+    sudo apt update
+    sudo apt install ca-certificates curl
+    sudo install -m 0755 -d /etc/apt/keyrings
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+    sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+
+    sudo apt update
+    wget https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-linux-amd64
+    sudo apt install ./*.sh
+    rm ./*.sh
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+    \. "$HOME/.nvm/nvm.sh"
+    nvm install 24
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    chmod +x ./*.sh
+    ./*.sh
+    rm ./*.sh
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -149,7 +174,7 @@ deploy_configs() {
 
     # Copy static wallpapers if any exist
     shopt -s nullglob
-    wallpapers=("$SCRIPT_DIR/sway/wallpapers/"*.{png,jpg,jpeg,webp,bmp})
+    wallpapers=("$SCRIPT_DIR/sway/wallpapers/"*.{mp4, png,jpg,jpeg,webp,bmp})
     shopt -u nullglob
     if [ ${#wallpapers[@]} -gt 0 ]; then
         cp "${wallpapers[@]}" "$CONFIG_DIR/sway/wallpapers/"
@@ -201,6 +226,8 @@ enable_services() {
     systemctl --user enable --now pipewire.service >> "$LOG_FILE" 2>&1 || true
     systemctl --user enable --now pipewire-pulse.service >> "$LOG_FILE" 2>&1 || true
     systemctl --user enable --now wireplumber.service >> "$LOG_FILE" 2>&1 || true
+    systemctl --user start docker-desktop
+    systemctl --user enable docker-desktop
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
