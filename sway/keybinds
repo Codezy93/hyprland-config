@@ -15,8 +15,8 @@ bindsym $mod+slash exec ~/.config/sway/scripts/keybinds.sh
 # Screenshots (macOS-style) — grim + slurp
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 bindsym $mod+Shift+s exec grim -g "$(slurp)" - | wl-copy
-bindsym $mod+Shift+3 exec grim - | wl-copy
-bindsym $mod+Shift+4 exec grim -g "$(slurp)" - | wl-copy
+# bindsym $mod+Shift+3 exec grim - | wl-copy
+# bindsym $mod+Shift+4 exec grim -g "$(slurp)" - | wl-copy
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Screen Recording
