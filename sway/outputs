@@ -1,0 +1,18 @@
+# ── Output (Monitor) Configuration ────────────────
+# Use `swaymsg -t get_outputs` to list available outputs
+
+# Default: auto-detect
+output * bg ~/.config/sway/wallpapers/default.png fill
+
+# Examples for dual monitor (uncomment and adjust):
+# Primary: 144Hz gaming/main display
+# output DP-1 resolution 2560x1440@144Hz position 0 0
+
+# Secondary: to the right of primary
+# output HDMI-A-1 resolution 1920x1080@60Hz position 2560 0
+
+# Laptop display
+# output eDP-1 resolution 1920x1080@144Hz position 0 0
+
+# Mirror mode
+# output HDMI-A-1 resolution 1920x1080 position 0 0

@@ -1,9 +1,9 @@
-# Dusk Garden — Hyprland Config
+# Dusk Garden — Sway Config
 
-A macOS-inspired Hyprland rice with a subtle cyberpunk accent. Clean, dark, minimal.
+A macOS-inspired Sway rice with a subtle cyberpunk accent. Clean, dark, minimal.
 
 **Theme:** Dusk Garden — soft neutrals with mint/rose highlights
-**Platform:** Arch Linux + Hyprland (NVIDIA optional)
+**Platform:** Ubuntu Server 24.04 + Sway (Wayland)
 
 ---
 
@@ -17,34 +17,29 @@ Colors: `#1C1C1E` bg · `#99E1D9` mint · `#B48291` rose · `#FFFAE3` cream
 
 | Component | Package |
 |---|---|
-| Window manager | `hyprland` |
+| Window manager | `sway` |
 | Status bar | `waybar` |
 | Launcher | `wofi` |
 | Terminal | `kitty` |
 | Notifications | `dunst` |
-| Wallpaper | `swww` |
-| Screen lock | `hyprlock` |
-| Idle daemon | `hypridle` |
+| Wallpaper | `swaybg` |
+| Screen lock | `swaylock` |
+| Idle daemon | `swayidle` |
 | File manager | `thunar` |
-| Screenshots | `grimblast-git` |
+| Screenshots | `grim` `slurp` |
 | Screen recording | `wf-recorder` `slurp` |
 | Clipboard | `wl-clipboard` `cliphist` |
-| Desktop widgets | `eww-wayland` |
+| Desktop widgets | `eww` (build from source) |
 | Audio | `pipewire` `pipewire-pulse` `wireplumber` |
 | Brightness | `brightnessctl` |
 | Media control | `playerctl` |
-| Network | `network-manager-applet` |
+| Network | `network-manager` |
 | Bluetooth | `blueman` |
 | Audio GUI | `pavucontrol` |
-| Auth agent | `polkit-kde-agent` |
-| Fonts | `ttf-jetbrains-mono-nerd` `noto-fonts` `noto-fonts-emoji` |
-| Cursor | `apple-cursor` (macOS-Monterey) |
-| GTK | `nwg-look` `adw-gtk3` |
-| Qt | `qt6ct` |
+| Auth agent | `policykit-1-gnome` |
+| Fonts | `JetBrainsMono Nerd Font` `CaskaydiaCove Nerd Font` `noto-fonts` |
+| XDG Portal | `xdg-desktop-portal-wlr` |
 | Weather | `curl` `jq` |
-| Shell extras | `pokemon-colorscripts-git` `fastfetch` |
-
-> **NVIDIA users:** The installer will prompt you. If you select NVIDIA, it installs `nvidia-dkms` `nvidia-utils` `egl-wayland` and enables `hypr/nvidia.conf`. You also need `nvidia_drm.modeset=1` in your kernel params.
 
 ---
 
@@ -53,49 +48,37 @@ Colors: `#1C1C1E` bg · `#99E1D9` mint · `#B48291` rose · `#FFFAE3` cream
 ```bash
 git clone https://github.com/yourusername/hyprland-config
 cd hyprland-config
-chmod +x install.sh
-./install.sh
+chmod +x ubuntu_setup.sh
+./ubuntu_setup.sh
 ```
 
 The installer will:
-1. Auto-detect your AUR helper (`paru` preferred, falls back to `yay`, offers to install paru if neither is found)
-2. Install all required packages
-3. Back up any existing configs (optional prompt)
-4. Deploy configs to `~/.config/`
-5. Optionally configure NVIDIA drivers and kernel hooks
+1. Update system packages
+2. Install Sway + full Wayland stack
+3. Install CLI tools (tmux, zsh, neovim, ripgrep, fzf, etc.)
+4. Install user apps via snap (VS Code, Obsidian, Spotify, etc.)
+5. Deploy all Dusk Garden configs to `~/.config/`
 6. Enable system services (bluetooth, NetworkManager, PipeWire)
-
-### Updating configs
-
-To re-deploy configs without reinstalling packages:
-
-```bash
-chmod +x update.sh
-./update.sh
-```
-
-This copies all config files and reloads Hyprland, Waybar, Dunst, and Eww.
 
 ### Post-install
 
 ```bash
-# 1. Add a default wallpaper (supports png, jpg, gif, webp)
-cp your-wallpaper.gif ~/.config/hypr/wallpapers/default.gif
+# 1. Add a default wallpaper (supports png, jpg, webp)
+cp your-wallpaper.png ~/.config/sway/wallpapers/default.png
 
 # 2. Set your city for the weather widget
 #    Add to your shell profile (~/.bashrc or ~/.zshrc):
 export WEATHER_CITY="London"
 
-# 3. NVIDIA — verify kernel params if warned during install
-
-# 4. Log out and select Hyprland from your display manager
+# 3. Start Sway
+exec sway
 ```
 
 ---
 
 ## Keybindings
 
-> Press `SUPER + /` inside Hyprland to open the interactive cheatsheet.
+> Press `SUPER + /` inside Sway to open the interactive cheatsheet.
 
 ### Quick Launch
 
@@ -131,12 +114,11 @@ export WEATHER_CITY="London"
 |---|---|
 | `SUPER + Q` | Close window |
 | `SUPER + F` | Fullscreen |
-| `SUPER + M` | Maximize (monocle) |
 | `SUPER + T` | Toggle float/tile |
-| `SUPER + C` | Center window |
-| `SUPER + P` | Pseudo-tile |
+| `SUPER + P` | Cycle layout (split/tabbed/stacking) |
 | `SUPER + J` | Toggle split direction |
-| `SUPER + SHIFT + Q` | Exit Hyprland |
+| `SUPER + R` | Enter resize mode |
+| `SUPER + SHIFT + Q` | Exit Sway |
 
 ### Focus & Move
 
@@ -146,7 +128,7 @@ export WEATHER_CITY="London"
 | `SUPER + H/L/K/J` | Move focus (Vim) |
 | `SUPER + SHIFT + arrow keys` | Move window |
 | `SUPER + SHIFT + H/L/K/J` | Move window (Vim) |
-| `SUPER + CTRL + arrow keys` | Resize window |
+| `SUPER + R` then arrows | Resize window |
 | `ALT + Tab` | Cycle windows |
 | `SUPER + LMB drag` | Move window |
 | `SUPER + RMB drag` | Resize window |
@@ -159,7 +141,6 @@ export WEATHER_CITY="London"
 | `SUPER + SHIFT + 1-9, 0` | Move window to workspace |
 | `SUPER + S` | Toggle scratchpad |
 | `SUPER + ALT + S` | Move window to scratchpad |
-| `SUPER + scroll` | Cycle workspaces |
 
 ### Media Keys
 
@@ -178,32 +159,32 @@ export WEATHER_CITY="London"
 
 ### Browser / default apps
 
-Edit `hypr/keybinds.conf` and uncomment/set:
-```ini
-bind = $mainMod, B, exec, firefox
+Edit `sway/keybinds` and uncomment/set:
+```
+bindsym $mod+b exec firefox
 ```
 
 ### App-specific workspace assignments
 
-Add to `hypr/rules.conf`:
-```ini
-windowrule = workspace 2, match:class:^(YourEditor)$
-windowrule = workspace 3, match:class:^(YourBrowser)$
+Add to `sway/rules`:
+```
+assign [app_id="code"] workspace number 2
+assign [app_id="firefox"] workspace number 3
 ```
 
-Use `hyprctl clients` while an app is open to find its class name.
+Use `swaymsg -t get_tree` while an app is open to find its app_id.
 
 ### Monitor setup
 
-Edit `hypr/monitors.conf`. Use `hyprctl monitors all` to list available outputs.
+Edit `sway/outputs`. Use `swaymsg -t get_outputs` to list available outputs.
 
-```ini
+```
 # Single monitor (auto-detect)
-monitor = , preferred, auto, 1
+output * bg ~/.config/sway/wallpapers/default.png fill
 
 # Dual monitor example
-monitor = DP-1, 2560x1440@144, 0x0, 1
-monitor = HDMI-A-1, 1920x1080@60, 2560x0, 1
+output DP-1 resolution 2560x1440@144Hz position 0 0
+output HDMI-A-1 resolution 1920x1080@60Hz position 2560 0
 ```
 
 ### Weather city
@@ -213,29 +194,20 @@ Set via environment variable in your shell profile:
 export WEATHER_CITY="London"
 ```
 
-Or edit `~/.config/hypr/scripts/weather.sh` directly.
+Or edit `~/.config/sway/scripts/weather.sh` directly.
 
 ### Dark / Light mode
 
 Toggle with `SUPER + D`. The script updates:
-- Hyprland colors (`colors.conf`)
+- Sway colors (`themes/colors`)
 - Waybar CSS (`@define-color` variables)
 - Dunst notification colors
 - Kitty terminal colors
 - GTK theme (via gsettings)
 
-### NVIDIA
-
-NVIDIA env vars live in `hypr/nvidia.conf` (separate from the main config). The installer enables this automatically if you select NVIDIA during setup. To enable/disable manually:
-
-```ini
-# In hypr/hyprland.conf, uncomment to enable:
-source = ~/.config/hypr/nvidia.conf
-```
-
 ### Fonts
 
-The config uses **JetBrainsMono Nerd Font** across all components (waybar, wofi, dunst, kitty, hyprlock). SF Pro Display and Inter are listed as fallbacks in waybar/wofi CSS.
+The config uses **JetBrainsMono Nerd Font** across all components (waybar, wofi, dunst, kitty, swaylock). **CaskaydiaCove Nerd Font** is used in kitty. SF Pro Display and Inter are listed as fallbacks in waybar/wofi CSS.
 
 ---
 
@@ -243,50 +215,49 @@ The config uses **JetBrainsMono Nerd Font** across all components (waybar, wofi,
 
 ```
 hyprland-config/
-├── hypr/
-│   ├── hyprland.conf       # Main entry — sources all below
-│   ├── appearance.conf     # Decorations, animations, blur
-│   ├── keybinds.conf       # All keybindings
-│   ├── rules.conf          # Window/layer rules
-│   ├── autostart.conf      # Startup programs
-│   ├── monitors.conf       # Display configuration
-│   ├── nvidia.conf         # NVIDIA env vars (optional source)
-│   ├── hypridle.conf       # Idle/sleep timeouts
-│   ├── hyprlock.conf       # Lock screen layout
+├── sway/
+│   ├── config            # Main entry — includes all below
+│   ├── keybinds          # All keybindings
+│   ├── autostart         # Startup programs
+│   ├── rules             # Window rules (for_window)
+│   ├── outputs           # Display configuration
+│   ├── inputs            # Keyboard/touchpad/mouse
+│   ├── appearance        # Borders, title bars, GTK
+│   ├── swaylock.conf     # Lock screen configuration
 │   ├── themes/
-│   │   └── colors.conf     # Color palette variables
+│   │   └── colors        # Color palette variables
 │   ├── scripts/
-│   │   ├── wallpaper.sh    # Wofi wallpaper picker
-│   │   ├── powermenu.sh    # Wofi power menu
-│   │   ├── darkmode-toggle.sh  # Dark/light theme switch
-│   │   ├── darkmode-status.sh  # Waybar dark mode indicator
-│   │   ├── dunst-status.sh     # Waybar notification indicator
-│   │   ├── keybinds.sh         # Wofi keybind cheatsheet
-│   │   └── weather.sh          # Waybar weather widget
-│   └── wallpapers/         # Your wallpapers (gitignored)
+│   │   ├── wallpaper.sh      # Wofi wallpaper picker
+│   │   ├── powermenu.sh      # Wofi power menu
+│   │   ├── darkmode-toggle.sh    # Dark/light theme switch
+│   │   ├── darkmode-status.sh    # Waybar dark mode indicator
+│   │   ├── dunst-status.sh       # Waybar notification indicator
+│   │   ├── keybinds.sh           # Wofi keybind cheatsheet
+│   │   └── weather.sh            # Waybar weather widget
+│   └── wallpapers/       # Your wallpapers (png, jpg, webp)
+├── hypr/                 # Legacy Hyprland configs (Arch)
 ├── waybar/
-│   ├── config.jsonc        # Bar layout and modules
-│   └── style.css           # Bar styling
+│   ├── config.jsonc      # Bar layout and modules
+│   └── style.css         # Bar styling
 ├── wofi/
-│   ├── config              # Wofi settings
-│   └── style.css           # Wofi styling
+│   ├── config            # Wofi settings
+│   └── style.css         # Wofi styling
 ├── dunst/
-│   └── dunstrc             # Notification styling
+│   └── dunstrc           # Notification styling
 ├── kitty/
-│   └── kitty.conf          # Terminal config
+│   └── kitty.conf        # Terminal config
 ├── eww/
-│   ├── eww.yuck            # Widget layout
-│   └── eww.scss            # Widget styling
-├── install.sh              # Full Arch Linux installer
-└── update.sh               # Config-only updater (no packages)
+│   ├── eww.yuck          # Widget layout
+│   └── eww.scss          # Widget styling
+└── ubuntu_setup.sh       # Ubuntu + Sway installer
 ```
 
 ---
 
 ## Notes
 
-- **NVIDIA:** Env vars are in a separate `hypr/nvidia.conf` file, sourced only when enabled. Non-NVIDIA users don't need to touch anything.
-- **Gestures:** Workspace swipe gestures are present but commented out in `hyprland.conf` — uncomment to enable.
-- **Cursor:** Uses `macOS-Monterey` from the `apple-cursor` AUR package. Change in `hypr/appearance.conf` and `hypr/autostart.conf` if you prefer another.
-- **Shell extras:** The installer adds `pokemon-colorscripts-git` and `fastfetch` for terminal flair.
-- **Desktop widgets:** Eww is configured with a clock widget. Customize in `eww/eww.yuck` and `eww/eww.scss`.
+- **Ubuntu Server:** This config is designed for Ubuntu Server 24.04 LTS with Sway installed on top. No desktop environment needed.
+- **Sway vs Hyprland:** Sway does not support blur, animations, or rounded window corners natively. The visual style comes from waybar, dunst, kitty, and GTK theming.
+- **Wallpapers:** Swaybg supports static images only (png, jpg, webp). The old mp4 video wallpapers from the Hyprland setup are not compatible.
+- **Eww widgets:** Eww is not in Ubuntu repos — build from source if you want the clock widget. See [github.com/elkowar/eww](https://github.com/elkowar/eww).
+- **Legacy Hyprland configs** are preserved in the `hypr/` directory for reference.

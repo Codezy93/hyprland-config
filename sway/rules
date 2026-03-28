@@ -1,0 +1,40 @@
+# ── Window Rules — macOS x Cyberpunk ─────────
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Workspace Assignments
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# WS 1: Terminal
+assign [app_id="kitty"] workspace number 1
+
+# Add your own app workspace assignments below:
+# assign [app_id="code"] workspace number 2
+# assign [app_id="firefox"] workspace number 3
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Float Rules
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# System dialogs
+for_window [app_id="pavucontrol"] floating enable
+for_window [app_id="nm-connection-editor"] floating enable
+for_window [app_id="blueman-manager"] floating enable
+for_window [title="File Operation Progress"] floating enable
+for_window [title="Picture-in-Picture"] floating enable
+for_window [title="Open File"] floating enable
+for_window [title="Save As"] floating enable
+
+# Calculators
+for_window [app_id="qalculate-gtk"] floating enable
+for_window [app_id="org.gnome.Calculator"] floating enable
+for_window [app_id="qalculate-gtk"] resize set 420 580
+for_window [app_id="qalculate-gtk"] move position center
+
+# Pin picture-in-picture
+for_window [title="Picture-in-Picture"] sticky enable
+for_window [title="Picture-in-Picture"] resize set 30 ppt 30 ppt
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Opacity Rules
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Note: Sway does not natively support per-window opacity.
+# Kitty handles its own transparency via background_opacity in kitty.conf.
+# For other apps, use a compositor like picom (X11) — not needed on Wayland/Sway.

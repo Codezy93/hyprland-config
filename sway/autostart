@@ -1,0 +1,35 @@
+# ── Autostart Applications ───────────────────
+
+# Wallpaper (swaybg — static images only)
+exec swaybg -i ~/.config/sway/wallpapers/default.png -m fill
+
+# Status bar
+exec waybar
+
+# Notification daemon
+exec dunst
+
+# Network (use nmcli on headless; uncomment if you have a GUI seat)
+# exec nm-applet --indicator
+
+# Clipboard manager
+exec wl-paste --type text --watch cliphist store
+exec wl-paste --type image --watch cliphist store
+
+# Authentication agent
+exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+
+# Idle daemon (swayidle)
+exec swayidle -w \
+    timeout 300 'swaylock -f' \
+    timeout 480 'swaymsg "output * power off"' \
+    resume 'swaymsg "output * power on"' \
+    timeout 1800 'systemctl suspend' \
+    before-sleep 'swaylock -f'
+
+# XDG Desktop Portal
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+
+# Desktop Widgets (eww) — uncomment if you built eww from source
+# exec eww daemon && eww open clock-widget

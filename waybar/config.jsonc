@@ -10,7 +10,7 @@
 
     "modules-left": [
         "custom/launcher",
-        "hyprland/workspaces"
+        "sway/workspaces"
     ],
     "modules-center": [
         "custom/media",
@@ -27,7 +27,7 @@
         "memory",
         "temperature",
         "disk",
-        "hyprland/language",
+        "sway/language",
         "battery",
         "keyboard-state",
         "custom/dunst",
@@ -43,7 +43,7 @@
         "tooltip-format": "Applications"
     },
 
-    "hyprland/workspaces": {
+    "sway/workspaces": {
         "format": "{icon}",
         "format-icons": {
             "1": "󰆍",
@@ -57,9 +57,7 @@
             "9": "",
             "10": ""
         },
-        "on-click": "activate",
-        "sort-by-number": true,
-        "active-only": false,
+        "disable-scroll": false,
         "all-outputs": true
     },
 
@@ -99,7 +97,7 @@
 
     // ── Right ───────────────────────────────
     "custom/weather": {
-        "exec": "~/.config/hypr/scripts/weather.sh",
+        "exec": "~/.config/sway/scripts/weather.sh",
         "interval": 900,
         "format": "{}",
         "tooltip": true,
@@ -180,8 +178,8 @@
         "tooltip-format": "Disk: {used} / {total} ({percentage_used}%)"
     },
 
-    "hyprland/language": {
-        "format": "󰌌",
+    "sway/language": {
+        "format": "󰌌 {}",
         "tooltip-format": "Layout: {long}"
     },
 
@@ -209,7 +207,7 @@
     },
 
     "custom/dunst": {
-        "exec": "~/.config/hypr/scripts/dunst-status.sh",
+        "exec": "~/.config/sway/scripts/dunst-status.sh",
         "return-type": "json",
         "interval": 1,
         "on-click": "dunstctl set-paused toggle",
@@ -217,10 +215,10 @@
     },
 
     "custom/darkmode": {
-        "exec": "~/.config/hypr/scripts/darkmode-status.sh",
+        "exec": "~/.config/sway/scripts/darkmode-status.sh",
         "return-type": "json",
         "interval": 2,
-        "on-click": "~/.config/hypr/scripts/darkmode-toggle.sh",
+        "on-click": "~/.config/sway/scripts/darkmode-toggle.sh",
         "tooltip": true
     },
 
@@ -231,7 +229,7 @@
 
     "custom/power": {
         "format": "⏻",
-        "on-click": "~/.config/hypr/scripts/powermenu.sh",
+        "on-click": "~/.config/sway/scripts/powermenu.sh",
         "tooltip-format": "Power Menu"
     }
 }

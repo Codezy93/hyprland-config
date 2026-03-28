@@ -1,0 +1,44 @@
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃    Dusk Garden — macOS x Cyberpunk             ┃
+# ┃    Sway Configuration                          ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+# ── Color Palette ────────────────────────────────
+include ~/.config/sway/themes/colors
+
+# ── Outputs & Inputs ────────────────────────────
+include ~/.config/sway/outputs
+include ~/.config/sway/inputs
+
+# ── Appearance ───────────────────────────────────
+include ~/.config/sway/appearance
+
+# ── Keybindings ──────────────────────────────────
+include ~/.config/sway/keybinds
+
+# ── Window Rules ─────────────────────────────────
+include ~/.config/sway/rules
+
+# ── Autostart ────────────────────────────────────
+include ~/.config/sway/autostart
+
+# ── Dev Environment ─────────────────────────────
+set $EDITOR nvim
+set $VISUAL nvim
+
+# ── General ──────────────────────────────────────
+default_border pixel 1
+default_floating_border pixel 1
+smart_borders on
+smart_gaps on
+gaps inner 4
+gaps outer 8
+
+# ── Layouts ──────────────────────────────────────
+# Default layout: splitv (similar to dwindle)
+workspace_layout default
+
+# ── Misc ─────────────────────────────────────────
+focus_follows_mouse yes
+mouse_warping output
+xwayland enable

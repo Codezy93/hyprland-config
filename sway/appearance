@@ -1,0 +1,24 @@
+# ── Appearance — macOS x Cyberpunk ────────────
+
+# ── Title Bar & Borders ──────────────────────────
+# Sway does not support blur, animations, or rounded corners natively.
+# The visual style is achieved through waybar, dunst, kitty, and GTK theming.
+
+font pango:JetBrainsMono Nerd Font 10
+titlebar_border_thickness 1
+titlebar_padding 6 2
+title_align center
+
+# Hide title bars for tiled windows (show only border)
+default_border pixel 1
+default_floating_border normal 1
+
+# ── Cursor ───────────────────────────────────────
+seat * xcursor_theme Adwaita 24
+
+# ── Environment Variables ────────────────────────
+exec_always {
+    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' 2>/dev/null || true
+    gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita:dark' 2>/dev/null || true
+    gsettings set org.gnome.desktop.interface cursor-size 24 2>/dev/null || true
+}

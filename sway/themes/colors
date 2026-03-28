@@ -1,0 +1,37 @@
+# ── Custom Color Palette ─────────────────────────
+# Name: Dusk Garden — macOS x Cyberpunk
+#
+# Core palette:
+# $snow     = #FCFCFC   (clean white)
+# $rose     = #B48291   (dusty rose)
+# $cream    = #FFFAE3   (warm cream)
+# $mint     = #99E1D9   (soft mint)
+# $plum     = #5D576B   (muted plum)
+#
+# macOS-inspired neutrals:
+# $bg       = #1C1C1E   (macOS dark bg)
+# $bg_alt   = #2C2C2E   (macOS elevated surface)
+# $surface  = #3A3A3C   (macOS tertiary)
+# $border   = #48484A   (macOS separator)
+# $muted    = #8E8E93   (macOS secondary label)
+#
+# Cyberpunk accent (the 10%):
+# $neon     = #99E1D9   (mint glow — subtle cyber accent)
+
+set $fg       #FCFCFC
+set $rose     #B48291
+set $cream    #FFFAE3
+set $mint     #99E1D9
+set $neon     #99E1D9
+set $plum     #5D576B
+set $bg       #1C1C1E
+set $bg_alt   #2C2C2E
+set $surface  #3A3A3C
+set $border   #48484A
+set $muted    #8E8E93
+
+# class                 border    bg        text    indicator  child_border
+client.focused          $rose     $bg_alt   $fg     $mint      $rose
+client.focused_inactive $border   $bg       $muted  $border    $border
+client.unfocused        $border   $bg       $muted  $border    $border
+client.urgent           $rose     $rose     $fg     $rose      $rose
