@@ -5075,3 +5075,573 @@ StScrollBar {
 #dashtodockContainer.right .dash-item-container .app-grid-running-dot {
   margin-bottom: 19px;
   background-color: #d34615; }
+
+/* ══════════════════════════════════════════════════════════════════
+   Dusk Garden — macOS × Cyberpunk GNOME Shell Theme
+   Matches waybar/style.css palette
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Palette ────────────────────────────────────────────────────── */
+/* bg      #1C1C1E   surface  #3A3A3C   mint   #99E1D9             */
+/* bg_alt  #2C2C2E   border   #48484A   rose   #B48291             */
+/* fg      #FCFCFC   muted    #8E8E93   cream  #FFFAE3             */
+/* plum    #5D576B                                                   */
+
+/* ── Global text + font ─────────────────────────────────────────── */
+stage {
+  font-family: "JetBrainsMono Nerd Font", "Inter", "SF Pro Display", sans-serif;
+  font-size: 13px;
+  color: #FCFCFC; }
+
+/* ── Top Panel ──────────────────────────────────────────────────── */
+#panel {
+  background-color: rgba(28, 28, 30, 0.85);
+  border-bottom: 1px solid rgba(153, 225, 217, 0.10);
+  color: #8E8E93;
+  font-size: 13px; }
+
+#panel .panel-button {
+  color: #8E8E93;
+  -natural-hpadding: 12px;
+  transition-duration: 150ms; }
+
+#panel .panel-button:hover,
+#panel .panel-button:focus {
+  color: #FCFCFC;
+  background-color: rgba(58, 58, 60, 0.6); }
+
+#panel .panel-button:active,
+#panel .panel-button:checked {
+  color: #99E1D9;
+  background-color: rgba(153, 225, 217, 0.10); }
+
+/* Activities label */
+#panel #activities {
+  color: #FCFCFC;
+  font-weight: 500; }
+
+/* Clock */
+#panel #clock-display {
+  color: #FCFCFC;
+  font-weight: 500; }
+
+/* ── Overview / Activities ──────────────────────────────────────── */
+.overview-controls,
+.search-entry-bin {
+  padding-top: 16px; }
+
+#overview {
+  spacing: 16px; }
+
+.search-entry {
+  background-color: rgba(44, 44, 46, 0.85);
+  border: 1px solid rgba(72, 72, 74, 0.4);
+  border-radius: 12px;
+  color: #FCFCFC;
+  selection-background-color: rgba(153, 225, 217, 0.25);
+  selected-color: #FCFCFC;
+  caret-color: #99E1D9;
+  padding: 10px 14px; }
+
+.search-entry:focus {
+  border-color: rgba(153, 225, 217, 0.45);
+  box-shadow: 0 0 0 1px rgba(153, 225, 217, 0.20); }
+
+.search-entry StIcon.search-entry-icon {
+  icon-size: 16px;
+  color: #8E8E93; }
+
+/* ── Dash (app dock) ────────────────────────────────────────────── */
+#dash {
+  background-color: rgba(28, 28, 30, 0.80);
+  border: 1px solid rgba(72, 72, 74, 0.35);
+  border-radius: 16px;
+  padding: 4px 8px; }
+
+.dash-item-container > .app-well-app > .overview-icon,
+.dash-item-container > .show-apps > .overview-icon {
+  border-radius: 12px;
+  transition-duration: 150ms; }
+
+.dash-item-container > .app-well-app:hover > .overview-icon,
+.dash-item-container > .show-apps:hover > .overview-icon {
+  background-color: rgba(58, 58, 60, 0.70); }
+
+.dash-item-container > .app-well-app:focus > .overview-icon {
+  background-color: rgba(153, 225, 217, 0.12); }
+
+/* Running indicator dot */
+.app-grid-running-dot,
+.running-dot {
+  background-color: #99E1D9;
+  width: 5px;
+  height: 5px;
+  border-radius: 3px; }
+
+/* ── App Grid (overview) ────────────────────────────────────────── */
+.overview-tile .overview-icon:hover,
+.grid-search-result .overview-icon:hover {
+  background-color: rgba(58, 58, 60, 0.65); }
+
+.overview-tile:selected .overview-icon,
+.grid-search-result:selected .overview-icon {
+  background-color: rgba(153, 225, 217, 0.15); }
+
+.overview-tile .overview-label,
+.grid-search-result .overview-label {
+  color: #FCFCFC;
+  font-size: 12px; }
+
+/* App folder */
+.app-folder {
+  background-color: rgba(44, 44, 46, 0.75);
+  border-radius: 16px; }
+
+.app-folder:hover {
+  background-color: rgba(58, 58, 60, 0.75); }
+
+.app-folder-dialog {
+  background-color: rgba(28, 28, 30, 0.92);
+  border: 1px solid rgba(72, 72, 74, 0.4);
+  border-radius: 20px;
+  padding: 24px; }
+
+/* ── Search Results ─────────────────────────────────────────────── */
+.search-section-separator {
+  color: rgba(142, 142, 147, 0.5); }
+
+.list-search-result {
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: #FCFCFC;
+  transition-duration: 150ms; }
+
+.list-search-result:hover {
+  background-color: rgba(58, 58, 60, 0.6); }
+
+.list-search-result:selected,
+.list-search-result:focus {
+  background-color: rgba(153, 225, 217, 0.15);
+  color: #99E1D9; }
+
+.list-search-result-title {
+  font-size: 13px;
+  font-weight: 500; }
+
+.list-search-result-description {
+  font-size: 11px;
+  color: #8E8E93; }
+
+/* ── Workspace thumbnails ───────────────────────────────────────── */
+.workspace-thumbnail {
+  border: 1px solid rgba(72, 72, 74, 0.4);
+  border-radius: 8px; }
+
+.workspace-thumbnail:active,
+.workspace-thumbnail-indicator {
+  border: 2px solid rgba(153, 225, 217, 0.55);
+  box-shadow: 0 0 10px rgba(153, 225, 217, 0.20); }
+
+/* ── Quick Settings (System Menu) ───────────────────────────────── */
+.quick-settings {
+  background-color: rgba(28, 28, 30, 0.90);
+  border: 1px solid rgba(72, 72, 74, 0.4);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45); }
+
+.quick-toggle,
+.quick-menu-toggle {
+  background-color: rgba(44, 44, 46, 0.70);
+  border-radius: 12px;
+  color: #8E8E93;
+  border: 1px solid rgba(72, 72, 74, 0.3);
+  transition-duration: 150ms; }
+
+.quick-toggle:hover,
+.quick-menu-toggle:hover {
+  background-color: rgba(58, 58, 60, 0.80);
+  color: #FCFCFC; }
+
+.quick-toggle:checked,
+.quick-menu-toggle .quick-toggle-arrow:checked {
+  background-color: rgba(153, 225, 217, 0.18);
+  color: #99E1D9;
+  border-color: rgba(153, 225, 217, 0.30); }
+
+.quick-settings-box .header-label {
+  color: #FCFCFC;
+  font-size: 13px;
+  font-weight: 600; }
+
+.quick-settings-system-item .power-item {
+  background-color: rgba(44, 44, 46, 0.60);
+  border-radius: 10px; }
+
+/* Sliders inside quick settings */
+.quick-slider .slider {
+  color: #99E1D9; }
+
+/* ── Notifications / Message List ───────────────────────────────── */
+.message-list {
+  background-color: transparent; }
+
+.message-list-placeholder {
+  color: rgba(142, 142, 147, 0.5); }
+
+.message {
+  background-color: rgba(44, 44, 46, 0.75);
+  border: 1px solid rgba(72, 72, 74, 0.3);
+  border-radius: 14px;
+  padding: 12px;
+  color: #FCFCFC; }
+
+.message:hover {
+  background-color: rgba(58, 58, 60, 0.70); }
+
+.message-header {
+  color: #8E8E93;
+  font-size: 11px; }
+
+.message-title {
+  color: #FCFCFC;
+  font-weight: 500;
+  font-size: 13px; }
+
+.message-body {
+  color: rgba(252, 252, 252, 0.75);
+  font-size: 12px; }
+
+.message .message-header .message-expand-button,
+.message .message-header .message-close-button {
+  color: #8E8E93;
+  background-color: transparent;
+  border-radius: 8px; }
+
+.message .message-header .message-expand-button:hover,
+.message .message-header .message-close-button:hover {
+  color: #FCFCFC;
+  background-color: rgba(58, 58, 60, 0.6); }
+
+/* ── Calendar ───────────────────────────────────────────────────── */
+.calendar {
+  background-color: transparent;
+  color: #FCFCFC;
+  padding: 8px; }
+
+.calendar .calendar-month-header {
+  color: #FCFCFC;
+  font-size: 13px;
+  font-weight: 500; }
+
+.calendar .calendar-month-header .calendar-month-label {
+  color: #FCFCFC;
+  background-color: transparent; }
+
+.calendar .calendar-day-heading {
+  color: #8E8E93;
+  background-color: transparent;
+  font-size: 11px; }
+
+.calendar .calendar-day {
+  color: #8E8E93;
+  background-color: transparent;
+  border-radius: 6px;
+  font-size: 12px; }
+
+.calendar .calendar-day:hover {
+  background-color: rgba(58, 58, 60, 0.6);
+  color: #FCFCFC; }
+
+.calendar .calendar-day.calendar-today {
+  color: #1C1C1E;
+  background-color: #99E1D9;
+  font-weight: 700; }
+
+.calendar .calendar-day.calendar-today:hover {
+  background-color: rgba(153, 225, 217, 0.85); }
+
+.calendar .calendar-day:selected {
+  background-color: rgba(153, 225, 217, 0.20);
+  color: #99E1D9; }
+
+.calendar .calendar-month-header .pager-button {
+  color: #8E8E93;
+  background-color: transparent; }
+
+.calendar .calendar-month-header .pager-button:hover {
+  color: #FCFCFC;
+  background-color: rgba(58, 58, 60, 0.5); }
+
+/* ── OSD (volume/brightness overlay) ───────────────────────────── */
+#osd {
+  background-color: rgba(28, 28, 30, 0.88);
+  border: 1px solid rgba(72, 72, 74, 0.35);
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.40); }
+
+#osd .osd-label {
+  color: #FCFCFC;
+  font-size: 13px; }
+
+#osd .osd-level-bar {
+  background-color: rgba(58, 58, 60, 0.80);
+  border-radius: 4px; }
+
+#osd .osd-level-bar .bar-level-full {
+  background-color: #99E1D9;
+  border-radius: 4px; }
+
+/* ── Popup Menus ────────────────────────────────────────────────── */
+.popup-menu,
+.popup-menu-boxpointer {
+  background-color: rgba(28, 28, 30, 0.92);
+  border: 1px solid rgba(72, 72, 74, 0.4);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  padding: 6px; }
+
+.popup-menu-item {
+  border-radius: 8px;
+  color: #8E8E93;
+  padding: 6px 12px;
+  transition-duration: 150ms; }
+
+.popup-menu-item:hover,
+.popup-menu-item:focus {
+  background-color: rgba(58, 58, 60, 0.65);
+  color: #FCFCFC; }
+
+.popup-menu-item:active {
+  background-color: rgba(153, 225, 217, 0.12);
+  color: #99E1D9; }
+
+.popup-menu-item:checked {
+  color: #99E1D9; }
+
+.popup-separator-menu-item .popup-separator-menu-item-separator {
+  background-color: rgba(72, 72, 74, 0.5);
+  height: 1px; }
+
+/* Sub-menus */
+.popup-sub-menu {
+  background-color: rgba(44, 44, 46, 0.60);
+  border-radius: 10px; }
+
+/* ── Buttons (generic) ──────────────────────────────────────────── */
+.button {
+  background-color: rgba(58, 58, 60, 0.75);
+  color: #FCFCFC;
+  border-radius: 8px;
+  border: 1px solid rgba(72, 72, 74, 0.4);
+  padding: 6px 20px; }
+
+.button:hover {
+  background-color: rgba(72, 72, 74, 0.80);
+  color: #FCFCFC; }
+
+.button:focus {
+  box-shadow: inset 0 0 0 2px rgba(153, 225, 217, 0.50); }
+
+.button.default {
+  background-color: rgba(153, 225, 217, 0.20);
+  color: #99E1D9;
+  border-color: rgba(153, 225, 217, 0.35); }
+
+.button.default:hover {
+  background-color: rgba(153, 225, 217, 0.30); }
+
+.button.destructive-action {
+  background-color: rgba(180, 130, 145, 0.20);
+  color: #B48291;
+  border-color: rgba(180, 130, 145, 0.35); }
+
+.button.destructive-action:hover {
+  background-color: rgba(180, 130, 145, 0.30); }
+
+/* ── Sliders ────────────────────────────────────────────────────── */
+.slider .slider-track {
+  background-color: rgba(72, 72, 74, 0.70);
+  border-radius: 4px; }
+
+.slider .slider-track .slider-fill {
+  background-color: #99E1D9;
+  border-radius: 4px; }
+
+.slider .slider-handle {
+  background-color: #99E1D9;
+  border: 2px solid rgba(28, 28, 30, 0.80);
+  border-radius: 50%; }
+
+/* ── Switch / Toggle ────────────────────────────────────────────── */
+.toggle-switch {
+  background-color: rgba(72, 72, 74, 0.70); }
+
+.toggle-switch:checked {
+  background-color: #99E1D9; }
+
+/* ── Lock / Login screen ────────────────────────────────────────── */
+.unlock-dialog {
+  background-color: transparent; }
+
+.unlock-dialog-clock {
+  color: #FCFCFC;
+  font-size: 64px;
+  font-weight: 200; }
+
+.unlock-dialog-clock-date {
+  color: rgba(252, 252, 252, 0.70);
+  font-size: 18px; }
+
+.unlock-dialog-layout {
+  spacing: 16px; }
+
+.login-dialog {
+  background-color: rgba(28, 28, 30, 0.70); }
+
+.login-dialog-user-name {
+  color: #FCFCFC;
+  font-size: 20px;
+  font-weight: 500; }
+
+/* Auth prompt */
+#entry {
+  background-color: rgba(44, 44, 46, 0.80);
+  border: 1px solid rgba(72, 72, 74, 0.4);
+  border-radius: 10px;
+  color: #FCFCFC;
+  padding: 10px 14px; }
+
+#entry:focus {
+  border-color: rgba(153, 225, 217, 0.45);
+  box-shadow: 0 0 0 1px rgba(153, 225, 217, 0.20); }
+
+/* Login / unlock buttons */
+.unlock-dialog .button,
+.login-dialog-button {
+  background-color: rgba(58, 58, 60, 0.80);
+  color: #FCFCFC;
+  border: 1px solid rgba(72, 72, 74, 0.4);
+  border-radius: 8px; }
+
+.unlock-dialog .button:hover,
+.login-dialog-button:hover {
+  background-color: rgba(72, 72, 74, 0.90);
+  color: #FCFCFC; }
+
+.unlock-dialog .button:focus,
+.login-dialog-button:focus {
+  box-shadow: inset 0 0 0 2px rgba(153, 225, 217, 0.50); }
+
+/* ── Window Switcher (Alt+Tab) ──────────────────────────────────── */
+.switcher-list {
+  background-color: rgba(28, 28, 30, 0.90);
+  border: 1px solid rgba(72, 72, 74, 0.4);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45); }
+
+.switcher-list .item-box {
+  border-radius: 10px;
+  padding: 8px;
+  color: #8E8E93; }
+
+.switcher-list .item-box:hover {
+  background-color: rgba(58, 58, 60, 0.60);
+  color: #FCFCFC; }
+
+.switcher-list .item-box:selected {
+  background-color: rgba(153, 225, 217, 0.15);
+  color: #99E1D9; }
+
+.switcher-list .thumbnail-box {
+  border-radius: 8px; }
+
+.switcher-list .app-icon-box {
+  border-radius: 10px; }
+
+.item-box-title {
+  color: #FCFCFC;
+  font-size: 12px; }
+
+.item-box-description {
+  color: #8E8E93;
+  font-size: 11px; }
+
+/* ── Tooltip ────────────────────────────────────────────────────── */
+.tooltip {
+  background-color: rgba(28, 28, 30, 0.90);
+  border: 1px solid rgba(72, 72, 74, 0.45);
+  border-radius: 8px;
+  color: #FCFCFC;
+  padding: 6px 10px;
+  font-size: 12px; }
+
+/* ── Notifications (popups, banners) ────────────────────────────── */
+.notification-banner {
+  background-color: rgba(28, 28, 30, 0.90);
+  border: 1px solid rgba(72, 72, 74, 0.35);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.40); }
+
+.notification-banner:hover {
+  background-color: rgba(44, 44, 46, 0.92); }
+
+.notification-title {
+  color: #FCFCFC;
+  font-size: 14px;
+  font-weight: 600; }
+
+.notification-body {
+  color: rgba(252, 252, 252, 0.75);
+  font-size: 12px; }
+
+.notification-time {
+  color: #8E8E93;
+  font-size: 11px; }
+
+/* Urgency tint */
+.notification-urgency-critical .notification-banner {
+  border-left: 3px solid #B48291; }
+
+/* ── Dash-to-Dock overrides ─────────────────────────────────────── */
+#dashtodockContainer .dash-background {
+  background-color: rgba(28, 28, 30, 0.82);
+  border: 1px solid rgba(72, 72, 74, 0.35);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35); }
+
+#dashtodockContainer .app-grid-running-dot {
+  background-color: #99E1D9; }
+
+/* ── Screenshot UI ──────────────────────────────────────────────── */
+.screenshot-ui-area-indicator {
+  border: 2px solid rgba(153, 225, 217, 0.60);
+  border-radius: 4px; }
+
+.screenshot-ui-type-button {
+  background-color: rgba(44, 44, 46, 0.80);
+  border-radius: 10px;
+  color: #8E8E93;
+  border: 1px solid rgba(72, 72, 74, 0.3); }
+
+.screenshot-ui-type-button:checked {
+  background-color: rgba(153, 225, 217, 0.18);
+  color: #99E1D9;
+  border-color: rgba(153, 225, 217, 0.35); }
+
+/* ── Looking Glass (dev console) ────────────────────────────────── */
+#LookingGlassDialog {
+  background-color: rgba(28, 28, 30, 0.95);
+  border: 1px solid rgba(153, 225, 217, 0.20);
+  border-radius: 12px;
+  color: #FCFCFC; }
+
+#LookingGlassDialog .notebook-tab:checked {
+  background-color: rgba(153, 225, 217, 0.15);
+  color: #99E1D9; }
+
+/* ═══════════════════════════════════════════════════════════════
+   End Dusk Garden overrides
+   ═══════════════════════════════════════════════════════════════ */

@@ -32,6 +32,7 @@ sudo apt update
 wget -O docker.deb https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-linux-amd64
 sudo apt-get update
 sudo apt install ./docker.deb
+rm docker.deb
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 curl -fsS https://dl.brave.com/install.sh | sh
@@ -39,6 +40,7 @@ curl -fsS https://dl.brave.com/install.sh | sh
 wget -O "miniconda.sh" https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod +x ./miniconda.sh
 ./miniconda.sh
+rm miniconda.sh
 
 cp -r "$HOME/hyprland-config/sway/wallpapers/" "$HOME/Videos/wallpapers/"
 
@@ -48,3 +50,9 @@ echo "Theme in /usr/share/gnome-shell/theme/Yaru/gnome-shell.css"
 
 git config --global user.email "virajsparadkar@gmail.com"
 git config --global user.name "Viraj"   
+
+gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
+
+mkdir -p ~/.themes/DuskGarden/gnome-shell
+cp ~/hyprland-config/gnome-shell.css ~/.themes/DuskGarden/gnome-shell/gnome-shell.css
+ln -s /usr/share/gnome-shell/theme/Yaru/gnome-shell-theme.gresource ~/.themes/DuskGarden/gnome-shell/
