@@ -14,13 +14,13 @@
     ],
     "modules-center": [
         "custom/media",
+        "sway/window",
         "clock"
     ],
     "modules-right": [
         "custom/weather",
         "pulseaudio",
         "pulseaudio#input",
-        "backlight",
         "bluetooth",
         "network",
         "cpu",
@@ -65,14 +65,20 @@
     "custom/media": {
         "format": "{icon} {}",
         "format-icons": {
-            "playing": "▶",
-            "paused": "⏸"
+            "playing": "󰐊",
+            "paused": "󰏦"
         },
         "max-length": 28,
         "exec": "playerctl metadata --format '{\"text\": \"{{artist}} — {{title}}\", \"tooltip\": \"{{playerName}}: {{artist}} — {{title}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' 2>/dev/null",
         "on-click": "playerctl play-pause",
         "return-type": "json",
         "interval": 2
+    },
+
+    "sway/window": {
+        "format": "{}",
+        "max-length": 40,
+        "tooltip": false
     },
 
     "clock": {
@@ -125,12 +131,8 @@
         "scroll-step": 5
     },
 
-    "backlight": {
-        "format": "{icon}",
-        "format-icons": ["󰃞", "󰃟", "󰃠"],
-        "tooltip-format": "Brightness: {percent}%",
-        "scroll-step": 5
-    },
+    // "backlight" module removed — requires /sys/class/backlight/ (laptop only).
+    // For external monitors with DDC/CI support, install ddcutil instead.
 
     "bluetooth": {
         "format": "󰂯",
@@ -228,7 +230,7 @@
     },
 
     "custom/power": {
-        "format": "⏻",
+        "format": "󰐥",
         "on-click": "~/.config/sway/scripts/powermenu.sh",
         "tooltip-format": "Power Menu"
     }

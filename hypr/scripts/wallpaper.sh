@@ -23,5 +23,6 @@ if [ -n "$selected" ]; then
     killall mpvpaper 2>/dev/null
     sleep 0.5
     mpvpaper -o "loop" '*' "$WALLPAPER_DIR/$selected" &
+    disown
     notify-send "Wallpaper" "Set to $selected"
 fi

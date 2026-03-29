@@ -1,7 +1,7 @@
 # ── Autostart Applications ───────────────────
 
 # Wallpaper (mpvpaper — supports mp4/gif video wallpapers)
-exec sh -c '[ -f ~/.config/sway/wallpapers/default.mp4 ] && mpvpaper -o "loop" '"'"'*'"'"' ~/.config/sway/wallpapers/default.mp4'
+exec sh -c 'wall=$(ls ~/.config/sway/wallpapers/*.mp4 2>/dev/null | head -1) && [ -n "$wall" ] && exec mpvpaper -o loop "*" "$wall"'
 
 # Status bar
 exec waybar

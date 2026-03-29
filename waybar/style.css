@@ -125,6 +125,20 @@ window#waybar > box {
     background: alpha(@surface, 0.5);
     box-shadow: none;
     text-shadow: none;
+    transform: scale(1.15);
+}
+
+/* ── Active Window Title ─────────────────────── */
+
+#window {
+    color: @fg;
+    font-size: 12px;
+    padding: 0 16px;
+    opacity: 0.7;
+}
+
+#window:empty {
+    padding: 0;
 }
 
 /* ── Clock ───────────────────────────────────── */

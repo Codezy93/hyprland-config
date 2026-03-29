@@ -55,5 +55,6 @@ Escape / Return      Exit Resize Mode
 ⌘ + W                Wallpaper Picker
 ⌘ + N                Notifications Toggle
 ⌘ + X                Power Menu
+⌘ + Shift + L        Lock Screen
 ⌘ + Shift + Q        Exit Sway
 KEYS

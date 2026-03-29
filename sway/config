@@ -27,8 +27,8 @@ set $EDITOR nvim
 set $VISUAL nvim
 
 # ── General ──────────────────────────────────────
-default_border pixel 1
-default_floating_border pixel 1
+default_border pixel 2
+default_floating_border pixel 2
 smart_borders on
 smart_gaps on
 gaps inner 4

@@ -172,4 +172,4 @@ echo "$NEW_MODE" > "$STATE_FILE"
 
 # Reload waybar and dunst
 killall -SIGUSR2 waybar 2>/dev/null
-killall -SIGUSR1 dunst 2>/dev/null
+killall -SIGUSR2 dunst 2>/dev/null

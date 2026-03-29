@@ -10,7 +10,7 @@ else
 fi
 
 if [ "$MODE" = "light" ]; then
-    echo '{"text": "☀", "tooltip": "Light mode — click to toggle", "class": "light"}'
+    echo '{"text": "󰖙", "tooltip": "Light mode — click to toggle", "class": "light"}'
 else
-    echo '{"text": "🌙", "tooltip": "Dark mode — click to toggle", "class": "dark"}'
+    echo '{"text": "󰖔", "tooltip": "Dark mode — click to toggle", "class": "dark"}'
 fi

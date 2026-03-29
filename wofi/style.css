@@ -6,7 +6,7 @@ window {
     border-radius: 16px;
     background-color: rgba(28, 28, 30, 0.85);
     font-family: "JetBrainsMono Nerd Font", "Inter", "SF Pro Display", sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
 }
 
@@ -17,7 +17,7 @@ window {
     border-radius: 10px;
     color: #FCFCFC;
     background-color: rgba(44, 44, 46, 0.8);
-    font-size: 15px;
+    font-size: 14px;
 }
 
 #input:focus {

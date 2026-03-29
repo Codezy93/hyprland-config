@@ -33,7 +33,7 @@ install_sway_stack() {
         waybar wofi dunst libnotify-bin \
         wl-clipboard \
         grim slurp wf-recorder \
-        kitty thunar thunar-archive-plugin thunar-volman
+        thunar thunar-archive-plugin thunar-volman
 
     log "Installing audio/media stack..."
     sudo apt install -y \
@@ -44,7 +44,7 @@ install_sway_stack() {
     sudo apt install -y \
         brightnessctl \
         policykit-1-gnome \
-        network-manager \
+        network-manager network-manager-gnome \
         blueman
 
     log "Installing fonts..."
@@ -126,11 +126,17 @@ install_cli_tools() {
     # Install cliphist (clipboard history for Wayland — not in Ubuntu repos)
     log "Installing cliphist..."
     if ! command -v cliphist &>/dev/null; then
-        local CLIPHIST_VERSION="v0.6.1"
-        curl -fsSL -o /tmp/cliphist \
-            "https://github.com/sentriz/cliphist/releases/download/${CLIPHIST_VERSION}/cliphist-linux-amd64"
-        chmod +x /tmp/cliphist
-        sudo mv /tmp/cliphist /usr/local/bin/cliphist
+        local CLIPHIST_URL
+        CLIPHIST_URL=$(curl -fsSL "https://api.github.com/repos/sentriz/cliphist/releases/latest" \
+            | jq -r '.assets[] | select(.name | test("linux.*(amd64|x86_64)")) | .browser_download_url' \
+            | head -1)
+        if [ -z "$CLIPHIST_URL" ]; then
+            warn "Could not resolve cliphist download URL — skipping"
+        else
+            curl -fsSL -o /tmp/cliphist "$CLIPHIST_URL"
+            chmod +x /tmp/cliphist
+            sudo mv /tmp/cliphist /usr/local/bin/cliphist
+        fi
     fi
 }
 
@@ -138,6 +144,8 @@ install_cli_tools() {
 # Step 4: User Applications
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 install_apps() {
+    curl -fsS https://dl.brave.com/install.sh | sh
+
     log "Installing user applications via snap..."
 
     if ! command -v snap &>/dev/null; then
@@ -171,13 +179,14 @@ EOF
 
     log "Installing nvm + Node 24..."
     curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
-    # nvm uses unbound variables internally — must disable set -u before sourcing
+    # nvm is a shell function with unbound vars and non-zero exits internally —
+    # must suspend set -euo pipefail for this block then restore it.
     export NVM_DIR="$HOME/.nvm"
-    set +u
+    set +euo pipefail
     # shellcheck source=/dev/null
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     nvm install 24
-    set -u
+    set -euo pipefail
 
     log "Installing Miniconda..."
     local CONDA_INSTALLER="/tmp/Miniconda3-latest-Linux-x86_64.sh"
@@ -238,9 +247,17 @@ deploy_configs() {
     cp "$SCRIPT_DIR/eww/eww.yuck"         "$CONFIG_DIR/eww/"
     cp "$SCRIPT_DIR/eww/eww.scss"         "$CONFIG_DIR/eww/"
 
+    # Create directories that keybinds assume exist
+    mkdir -p "$HOME/Videos"
+
+    # Ensure ~/.local/bin is in PATH (needed for kitty from official installer,
+    # and any other user-local binaries). Sway inherits the login shell PATH,
+    # so this must be in the profile, not just the current session.
+    if ! grep -q '\.local/bin' "$HOME/.profile" 2>/dev/null; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.profile"
+    fi
+
     # Ensure snap app .desktop files are visible to wofi
-    # Snap installs .desktop files to /var/lib/snapd/desktop, which is not in
-    # the default XDG_DATA_DIRS when starting Sway from a TTY.
     if ! grep -q "snapd/desktop" "$HOME/.profile" 2>/dev/null; then
         cat >> "$HOME/.profile" << 'EOF'
 
@@ -250,6 +267,39 @@ if [ -d /var/lib/snapd/desktop ]; then
 fi
 EOF
     fi
+
+    # Bug fix 1: polkit rule so systemctl poweroff/reboot works without a password
+    # dialog from the powermenu. Without this, systemctl silently fails for
+    # non-root users even when a polkit agent is running.
+    sudo tee /etc/polkit-1/rules.d/50-power.rules > /dev/null << 'EOF'
+polkit.addRule(function(action, subject) {
+    var powerActions = [
+        "org.freedesktop.login1.power-off",
+        "org.freedesktop.login1.power-off-multiple-sessions",
+        "org.freedesktop.login1.reboot",
+        "org.freedesktop.login1.reboot-multiple-sessions"
+    ];
+    if (powerActions.indexOf(action.id) !== -1 && subject.isInGroup("sudo")) {
+        return polkit.Result.YES;
+    }
+});
+EOF
+
+    # Auto-start Sway on login at TTY1
+    # The guard prevents starting inside an existing session (SSH, TTY2+, etc.)
+    local SWAY_AUTOSTART='
+# Auto-start Sway on TTY1
+if [ -z "$WAYLAND_DISPLAY" ] && [ "${XDG_VTNR:-0}" -eq 1 ]; then
+    exec sway
+fi'
+
+    # Write to both bash and zsh login profiles (installer sets zsh as default
+    # but the user may log in before chsh takes effect)
+    for profile in "$HOME/.bash_profile" "$HOME/.zprofile"; do
+        if ! grep -q "exec sway" "$profile" 2>/dev/null; then
+            echo "$SWAY_AUTOSTART" >> "$profile"
+        fi
+    done
 
     # Set zsh as default shell
     if command -v zsh &>/dev/null; then
