@@ -2,7 +2,8 @@
 # Use `swaymsg -t get_outputs` to list available outputs
 
 # Default: auto-detect
-output * bg ~/.config/sway/wallpapers/default.png fill
+# Wallpaper is handled by mpvpaper (see autostart)
+# output * bg ~/.config/sway/wallpapers/default.png fill
 
 # Examples for dual monitor (uncomment and adjust):
 # Primary: 144Hz gaming/main display

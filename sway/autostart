@@ -1,7 +1,7 @@
 # ── Autostart Applications ───────────────────
 
-# Wallpaper (swaybg — static images only)
-exec swaybg -i ~/.config/sway/wallpapers/default.png -m fill
+# Wallpaper (mpvpaper — supports mp4/gif video wallpapers)
+exec mpvpaper -o "loop" '*' ~/.config/sway/wallpapers/default.mp4
 
 # Status bar
 exec waybar
