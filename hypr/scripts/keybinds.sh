@@ -3,7 +3,7 @@
 
 cat <<'KEYS' | wofi --show dmenu --prompt "⌨ Shortcuts" --width 520 --height 580
 ──── Quick Launch ────
-⌘ + Return           Terminal (Kitty)
+⌘ + Return           Terminal
 ⌘ + Space            Launcher (Wofi)
 ⌘ + E                Files (Thunar)
 ⌘ + V                Clipboard History
@@ -55,5 +55,6 @@ Alt + Tab             Cycle Windows
 ⌘ + W                Wallpaper Picker
 ⌘ + N                Notifications Toggle
 ⌘ + X                Power Menu
+⌘ + Ctrl + L         Lock Screen
 ⌘ + Shift + Q        Exit Hyprland
 KEYS
