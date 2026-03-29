@@ -125,7 +125,6 @@ window#waybar > box {
     background: alpha(@surface, 0.5);
     box-shadow: none;
     text-shadow: none;
-    transform: scale(1.15);
 }
 
 /* ── Active Window Title ─────────────────────── */
@@ -137,9 +136,6 @@ window#waybar > box {
     opacity: 0.7;
 }
 
-#window:empty {
-    padding: 0;
-}
 
 /* ── Clock ───────────────────────────────────── */
 

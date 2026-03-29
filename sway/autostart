@@ -4,7 +4,7 @@
 exec sh -c 'wall=$(ls ~/.config/sway/wallpapers/*.mp4 2>/dev/null | head -1) && [ -n "$wall" ] && exec mpvpaper -o loop "*" "$wall"'
 
 # Status bar
-exec sh -c 'command -v waybar >/dev/null 2>&1 && waybar || notify-send "Waybar" "waybar not found — install it to get the status bar."'
+exec sh -c 'if command -v waybar >/dev/null 2>&1; then waybar; else notify-send "Waybar" "waybar not found — install it to get the status bar."; fi'
 
 # Notification daemon
 exec dunst
