@@ -187,8 +187,8 @@ deploy_configs() {
 
     # Eww (configs only — requires eww binary built from source)
     mkdir -p "$CONFIG_DIR/eww"
-    cp "$SCRIPT_DIR/eww/eww.yuck"         "$CONFIG_DIR/eww/"
-    cp "$SCRIPT_DIR/eww/eww.scss"         "$CONFIG_DIR/eww/"
+    cp "$SCRIPT_DIR/eww-config/eww.yuck"         "$CONFIG_DIR/eww/"
+    cp "$SCRIPT_DIR/eww-config/eww.scss"         "$CONFIG_DIR/eww/"
 
     # Create directories that keybinds assume exist
     mkdir -p "$HOME/Videos"
