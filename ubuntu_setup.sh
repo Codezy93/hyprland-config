@@ -139,6 +139,7 @@ install_cli_tools() {
     cargo build --release --no-default-features --features=wayland
     cd target/release
     chmod +x ./eww
+    sudo cp /eww /usr/local/bin/
     cd ..
     cd ..
 }

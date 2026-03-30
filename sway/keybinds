@@ -127,10 +127,9 @@ floating_modifier $mod normal
 bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
 bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
 bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-# Brightness keys — uncomment on laptops with /sys/class/backlight/ support
-# On desktops/servers use ddcutil for external monitors (sudo ddcutil setvcp 10 +5)
-# bindsym XF86MonBrightnessUp exec brightnessctl s 5%+
-# bindsym XF86MonBrightnessDown exec brightnessctl s 5%-
+# Brightness — tries brightnessctl (laptop) then ddcutil (external monitor)
+bindsym XF86MonBrightnessUp exec sh -c 'brightnessctl s 5%+ 2>/dev/null || ddcutil setvcp 10 +5 2>/dev/null'
+bindsym XF86MonBrightnessDown exec sh -c 'brightnessctl s 5%- 2>/dev/null || ddcutil setvcp 10 -5 2>/dev/null'
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
