@@ -18,6 +18,13 @@ sudo snap install spotify
 sudo snap install code --classic
 sudo snap install proton-mail
 
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+\. "$HOME/.nvm/nvm.sh"
+nvm install 24
+
 curl -O https://github.com/ente-io/ente/releases/download/auth-v4.4.17/ente-auth-v4.4.17-x86_64.deb
 sudo apt install ./*.deb
 rm ./*.deb
