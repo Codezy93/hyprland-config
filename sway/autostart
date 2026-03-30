@@ -25,6 +25,7 @@ exec sh -c 'for agent in \
 
 # Idle daemon (swayidle)
 exec swayidle -w \
+    lock 'swaylock -C ~/.config/sway/swaylock.conf' \
     timeout 300 'swaylock -C ~/.config/sway/swaylock.conf' \
     timeout 480 'swaymsg "output * power off"' \
     resume 'swaymsg "output * power on"' \

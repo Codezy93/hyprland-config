@@ -30,7 +30,7 @@ bindsym $mod+n exec dunstctl set-paused toggle
 bindsym $mod+x exec ~/.config/sway/scripts/powermenu.sh
 bindsym $mod+w exec ~/.config/sway/scripts/wallpaper.sh
 bindsym $mod+d exec ~/.config/sway/scripts/darkmode-toggle.sh
-bindsym $mod+Ctrl+l exec loginctl lock-session
+bindsym $mod+l exec loginctl lock-session
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Window Management
@@ -50,7 +50,6 @@ bindsym $mod+Right focus right
 bindsym $mod+Up focus up
 bindsym $mod+Down focus down
 bindsym $mod+h focus left
-bindsym $mod+l focus right
 bindsym $mod+k focus up
 bindsym Alt+Tab focus next
 
