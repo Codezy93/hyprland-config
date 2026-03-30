@@ -16,6 +16,11 @@ sudo snap install bitwarden
 sudo snap install thunderbird
 sudo snap install spotify
 sudo snap install code --classic
+sudo snap install proton-mail
+
+curl -O https://github.com/ente-io/ente/releases/download/auth-v4.4.17/ente-auth-v4.4.17-x86_64.deb
+sudo apt install ./*.deb
+rm ./*.deb
 
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc

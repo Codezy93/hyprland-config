@@ -144,10 +144,8 @@ install_cli_tools() {
     )
     rm -rf /tmp/eww-build
 
-    log "Installing hyprlock..."
-    sudo add-apt-repository ppa:hyprwm/hypr-development -y
-    sudo apt update
-    sudo apt install -y hyprlock
+    log "Installing gtklock (Wayland lockscreen with clock/userinfo modules)..."
+    sudo apt install -y gtklock
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -167,9 +165,10 @@ deploy_configs() {
     cp "$SCRIPT_DIR/sway/appearance"      "$CONFIG_DIR/sway/"
     cp "$SCRIPT_DIR/sway/swaylock.conf"   "$CONFIG_DIR/sway/"
 
-    # Hyprlock (lock screen with clock, date, and password field)
-    mkdir -p "$CONFIG_DIR/hypr"
-    cp "$SCRIPT_DIR/hypr/hyprlock.conf"   "$CONFIG_DIR/hypr/"
+    # Gtklock (Wayland lockscreen with clock, date, and userinfo)
+    mkdir -p "$CONFIG_DIR/gtklock"
+    cp "$SCRIPT_DIR/gtklock/config.ini"   "$CONFIG_DIR/gtklock/"
+    cp "$SCRIPT_DIR/gtklock/style.css"    "$CONFIG_DIR/gtklock/"
     cp "$SCRIPT_DIR/sway/themes/colors"   "$CONFIG_DIR/sway/themes/"
     cp "$SCRIPT_DIR/sway/scripts/"*.sh    "$CONFIG_DIR/sway/scripts/"
     chmod +x "$CONFIG_DIR/sway/scripts/"*.sh

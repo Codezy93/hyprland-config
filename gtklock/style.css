@@ -1,0 +1,55 @@
+/* ── Gtklock — Dusk Garden (macOS-inspired) ── */
+
+window {
+    background-color: rgba(28, 28, 30, 0.85);
+    font-family: "JetBrainsMono Nerd Font", monospace;
+}
+
+/* Clock */
+#clock-time {
+    color: #FCFCFC;
+    font-size: 72px;
+    font-weight: 300;
+    margin-bottom: 4px;
+}
+
+#clock-date {
+    color: #B48291;
+    font-size: 16px;
+    margin-bottom: 32px;
+}
+
+/* User info */
+#userinfo-name {
+    color: #FFFAE3;
+    font-size: 14px;
+    margin-top: 12px;
+    margin-bottom: 16px;
+}
+
+/* Password entry */
+entry {
+    background-color: rgba(42, 38, 49, 0.95);
+    color: #FCFCFC;
+    border: 2px solid #3D3847;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 14px;
+    min-width: 280px;
+    caret-color: #99E1D9;
+}
+
+entry:focus {
+    border-color: #99E1D9;
+}
+
+/* Wrong password flash */
+entry.error {
+    border-color: #B48291;
+    background-color: rgba(180, 130, 145, 0.15);
+}
+
+button {
+    background: transparent;
+    border: none;
+}
