@@ -101,7 +101,7 @@ install_cli_tools() {
     # libmpv-dev is in the universe repo — enable it first
     sudo add-apt-repository universe -y
     sudo apt update
-    sudo apt install -y libmpv-dev libwayland-dev wayland-protocols pkg-config rustup cargo
+    sudo apt install -y libmpv-dev libwayland-dev wayland-protocols pkg-config
     # Build in a subshell so cd does not affect the rest of the script
     (
         rm -rf /tmp/mpvpaper-build
@@ -129,6 +129,10 @@ install_cli_tools() {
             sudo mv /tmp/cliphist /usr/local/bin/cliphist
         fi
     fi
+
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    source "$HOME/.cargo/env"
+    sudo apt install libglib2.0-dev libpango1.0-dev libcairo2-dev libdbusmenu-gtk3-dev libgtk-layer-shell-dev libpulse-dev libasound2-dev
 
     git clone https://github.com/elkowar/eww
     cd eww
