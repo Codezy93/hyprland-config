@@ -28,7 +28,7 @@ install_system_updates() {
 install_sway_stack() {
     log "Installing Sway/Wayland compositor stack..."
     sudo apt install -y \
-        sway swaybg swaylock swayidle \
+        sway swaybg swayidle \
         xwayland xdg-desktop-portal-wlr \
         waybar wofi dunst libnotify-bin \
         wl-clipboard \
@@ -143,6 +143,11 @@ install_cli_tools() {
         sudo cp ./target/release/eww /usr/local/bin/
     )
     rm -rf /tmp/eww-build
+
+    log "Installing hyprlock..."
+    sudo add-apt-repository ppa:hyprwm/hypr-development -y
+    sudo apt update
+    sudo apt install -y hyprlock
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -161,6 +166,10 @@ deploy_configs() {
     cp "$SCRIPT_DIR/sway/inputs"          "$CONFIG_DIR/sway/"
     cp "$SCRIPT_DIR/sway/appearance"      "$CONFIG_DIR/sway/"
     cp "$SCRIPT_DIR/sway/swaylock.conf"   "$CONFIG_DIR/sway/"
+
+    # Hyprlock (lock screen with clock, date, and password field)
+    mkdir -p "$CONFIG_DIR/hypr"
+    cp "$SCRIPT_DIR/hypr/hyprlock.conf"   "$CONFIG_DIR/hypr/"
     cp "$SCRIPT_DIR/sway/themes/colors"   "$CONFIG_DIR/sway/themes/"
     cp "$SCRIPT_DIR/sway/scripts/"*.sh    "$CONFIG_DIR/sway/scripts/"
     chmod +x "$CONFIG_DIR/sway/scripts/"*.sh
