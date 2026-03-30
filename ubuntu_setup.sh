@@ -113,15 +113,6 @@ install_cli_tools() {
     )
     rm -rf /tmp/mpvpaper-build
 
-    # Install oh-my-zsh
-    if [ ! -d "$HOME/.oh-my-zsh" ]; then
-        log "Installing oh-my-zsh..."
-        RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-    fi
-
-    # Install kitty via official installer (latest version)
-    log "Installing latest Kitty terminal..."
-    curl -fsSL https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin launch=n
 
     # Install cliphist (clipboard history for Wayland — not in Ubuntu repos)
     log "Installing cliphist..."
@@ -138,62 +129,14 @@ install_cli_tools() {
             sudo mv /tmp/cliphist /usr/local/bin/cliphist
         fi
     fi
-}
 
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# Step 4: User Applications
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-install_apps() {
-    curl -fsS https://dl.brave.com/install.sh | sh
-
-    log "Installing user applications via snap..."
-
-    if ! command -v snap &>/dev/null; then
-        sudo apt install -y snapd
-    fi
-
-    sudo snap install obsidian --classic
-    sudo snap install qalculate
-    sudo snap install dbgate
-    sudo snap install bitwarden
-    sudo snap install thunderbird
-    sudo snap install spotify
-    sudo snap install code --classic
-
-    log "Installing Docker Engine..."
-    sudo apt install -y ca-certificates curl
-    sudo install -m 0755 -d /etc/apt/keyrings
-    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-    sudo chmod a+r /etc/apt/keyrings/docker.asc
-    sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
-Types: deb
-URIs: https://download.docker.com/linux/ubuntu
-Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
-Components: stable
-Architectures: $(dpkg --print-architecture)
-Signed-By: /etc/apt/keyrings/docker.asc
-EOF
-    sudo apt update
-    sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-    sudo usermod -aG docker "$USER"
-
-    log "Installing nvm + Node 24..."
-    curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
-    # nvm is a shell function with unbound vars and non-zero exits internally —
-    # must suspend set -euo pipefail for this block then restore it.
-    export NVM_DIR="$HOME/.nvm"
-    set +euo pipefail
-    # shellcheck source=/dev/null
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    nvm install 24
-    set -euo pipefail
-
-    log "Installing Miniconda..."
-    local CONDA_INSTALLER="/tmp/Miniconda3-latest-Linux-x86_64.sh"
-    curl -fsSL -o "$CONDA_INSTALLER" \
-        "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
-    bash "$CONDA_INSTALLER" -b -p "$HOME/miniconda3"
-    rm -f "$CONDA_INSTALLER"
+    git clone https://github.com/elkowar/eww
+    cd eww
+    cargo build --release --no-default-features --features=wayland
+    cd target/release
+    chmod +x ./eww
+    cd ..
+    cd ..
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -300,11 +243,6 @@ fi'
             echo "$SWAY_AUTOSTART" >> "$profile"
         fi
     done
-
-    # Set zsh as default shell
-    if command -v zsh &>/dev/null; then
-        chsh -s "$(which zsh)"
-    fi
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -324,10 +262,6 @@ enable_services() {
     systemctl --user enable --now pipewire.service >> "$LOG_FILE" 2>&1 || true
     systemctl --user enable --now pipewire-pulse.service >> "$LOG_FILE" 2>&1 || true
     systemctl --user enable --now wireplumber.service >> "$LOG_FILE" 2>&1 || true
-
-    if systemctl list-unit-files | grep -q docker.service; then
-        sudo systemctl enable --now docker.service >> "$LOG_FILE" 2>&1 || true
-    fi
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -357,14 +291,13 @@ main() {
     install_system_updates
     install_sway_stack
     install_cli_tools
-    install_apps
     deploy_configs
     enable_services
 
     echo ""
     log "Installation complete!"
     echo ""
-    echo "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+    echo "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
     echo "┃  Next steps:                                   ┃"
     echo "┃                                                ┃"
     echo "┃  1. Add a default wallpaper:                   ┃"
@@ -372,17 +305,18 @@ main() {
     echo "┃                   default.png                  ┃"
     echo "┃                                                ┃"
     echo "┃  2. Set weather city in ~/.zshrc:              ┃"
-    echo "┃     export WEATHER_CITY=\"London\"                ┃"
+    echo "┃     export WEATHER_CITY=\"London\"             ┃"
     echo "┃                                                ┃"
     echo "┃  3. Log out and back in (Docker group, zsh)    ┃"
     echo "┃                                                ┃"
     echo "┃  4. Start Sway:                                ┃"
     echo "┃     exec sway                                  ┃"
     echo "┃                                                ┃"
-    echo "┃  5. (Optional) Build eww from source:          ┃"
-    echo "┃     github.com/elkowar/eww                     ┃"
+    echo "┃  5. Enable eww from source:                    ┃"
+    echo "┃     ./eww daemon                               |"
+    echo "|    ./eww open <window_name>                    ┃"
     echo "┃                                                ┃"
-    echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
 }
 
 main "$@"

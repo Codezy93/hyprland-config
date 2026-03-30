@@ -5,7 +5,7 @@ sudo apt upgrade -y
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
-sudo apt install -y tmux zsh neovim curl wget git gh gcc rustup kitty gnome-shell-extensions gnome-tweaks
+sudo apt install -y tmux zsh neovim curl wget git gh gcc kitty ca-certificates
 
 sudo snap install obsidian --classic
 sudo snap install qalculate
@@ -15,8 +15,8 @@ sudo snap install thunderbird
 sudo snap install spotify
 sudo snap install code --classic
 
-sudo apt update
-sudo apt install ca-certificates curl
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -32,7 +32,6 @@ sudo apt update
 wget -O docker.deb https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-linux-amd64
 sudo apt-get update
 sudo apt install ./docker.deb
-rm docker.deb
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 curl -fsS https://dl.brave.com/install.sh | sh
@@ -42,17 +41,7 @@ chmod +x ./miniconda.sh
 ./miniconda.sh
 rm miniconda.sh
 
-cp -r "$HOME/hyprland-config/sway/wallpapers/" "$HOME/Videos/wallpapers/"
-
 chsh -s "$(which zsh)"
-
-echo "Theme in /usr/share/gnome-shell/theme/Yaru/gnome-shell.css"
 
 git config --global user.email "virajsparadkar@gmail.com"
 git config --global user.name "Viraj"   
-
-gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
-
-# mkdir -p ~/.themes/DuskGarden/gnome-shell
-# cp ~/hyprland-config/gnome-shell.css ~/.themes/DuskGarden/gnome-shell/gnome-shell.css
-# ln -s /usr/share/gnome-shell/theme/Yaru/gnome-shell-theme.gresource ~/.themes/DuskGarden/gnome-shell/
