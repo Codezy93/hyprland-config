@@ -7,6 +7,8 @@ sudo apt-get upgrade -y
 
 sudo apt install -y tmux zsh neovim curl wget git gh gcc kitty ca-certificates
 
+sudo apt install snapd
+sudo snap install snap-store
 sudo snap install obsidian --classic
 sudo snap install qalculate
 sudo snap install dbgate

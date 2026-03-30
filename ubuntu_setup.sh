@@ -134,14 +134,15 @@ install_cli_tools() {
     source "$HOME/.cargo/env"
     sudo apt install libglib2.0-dev libpango1.0-dev libcairo2-dev libdbusmenu-gtk3-dev libgtk-layer-shell-dev libpulse-dev libasound2-dev
 
-    git clone https://github.com/elkowar/eww
-    cd eww
-    cargo build --release --no-default-features --features=wayland
-    cd target/release
-    chmod +x ./eww
-    sudo cp /eww /usr/local/bin/
-    cd ..
-    cd ..
+    (
+        rm -rf /tmp/eww-build
+        git clone --depth=1 https://github.com/elkowar/eww /tmp/eww-build
+        cd /tmp/eww-build
+        cargo build --release --no-default-features --features=wayland
+        chmod +x ./target/release/eww
+        sudo cp ./target/release/eww /usr/local/bin/
+    )
+    rm -rf /tmp/eww-build
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
