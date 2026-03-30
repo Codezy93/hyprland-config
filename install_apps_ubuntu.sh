@@ -15,8 +15,6 @@ sudo snap install thunderbird
 sudo snap install spotify
 sudo snap install code --classic
 
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc

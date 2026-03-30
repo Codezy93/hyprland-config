@@ -101,7 +101,7 @@ install_cli_tools() {
     # libmpv-dev is in the universe repo — enable it first
     sudo add-apt-repository universe -y
     sudo apt update
-    sudo apt install -y libmpv-dev libwayland-dev wayland-protocols pkg-config
+    sudo apt install -y libmpv-dev libwayland-dev wayland-protocols pkg-config rustup cargo
     # Build in a subshell so cd does not affect the rest of the script
     (
         rm -rf /tmp/mpvpaper-build
