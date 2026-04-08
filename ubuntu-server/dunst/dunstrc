@@ -1,0 +1,70 @@
+# ── Dusk Garden — macOS x Cyberpunk Notifications
+
+[global]
+    monitor = 0
+    follow = mouse
+    width = 340
+    height = 120
+    origin = top-right
+    offset = 12x12
+    notification_limit = 4
+    progress_bar = true
+
+    indicate_hidden = yes
+    transparency = 0
+    separator_height = 0
+    padding = 16
+    horizontal_padding = 18
+    text_icon_padding = 14
+
+    frame_width = 1
+    frame_color = "#48484A"
+    separator_color = frame
+
+    sort = yes
+    idle_threshold = 120
+
+    font = JetBrainsMono Nerd Font 11
+    line_height = 4
+    markup = full
+    format = "<b>%s</b>\n<span size='small'>%b</span>"
+    alignment = left
+    vertical_alignment = center
+    show_age_threshold = 60
+
+    ellipsize = middle
+    ignore_newline = no
+    stack_duplicates = true
+    hide_duplicate_count = false
+    show_indicators = yes
+
+    icon_position = left
+    min_icon_size = 32
+    max_icon_size = 48
+
+    corner_radius = 16
+
+    mouse_left_click = close_current
+    mouse_middle_click = do_action, close_current
+    mouse_right_click = close_all
+
+[urgency_low]
+    background = "#1C1C1EDD"
+    foreground = "#FCFCFC"
+    highlight = "#99E1D9"
+    frame_color = "#48484A66"
+    timeout = 4
+
+[urgency_normal]
+    background = "#1C1C1EDD"
+    foreground = "#FCFCFC"
+    highlight = "#99E1D9"
+    frame_color = "#48484A66"
+    timeout = 8
+
+[urgency_critical]
+    background = "#1C1C1EEE"
+    foreground = "#FCFCFC"
+    highlight = "#B48291"
+    frame_color = "#B4829166"
+    timeout = 0

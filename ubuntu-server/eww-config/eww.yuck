@@ -1,0 +1,44 @@
+; ── Dusk Garden — Eww Widgets ────────────────
+; A minimal desktop clock widget
+
+; ── Variables ─────────────────────────────────
+(defpoll time :interval "1s"
+  "date '+%H:%M'")
+
+(defpoll date :interval "60s"
+  "date '+%A, %B %d'")
+
+(defpoll cpu :interval "3s"
+  "top -bn1 | grep 'Cpu(s)' | awk '{print int($2)}'")
+
+(defpoll mem :interval "5s"
+  "free | awk '/Mem:/ {printf \"%.0f\", $3/$2 * 100}'")
+
+; ── Widgets ───────────────────────────────────
+(defwidget clock-widget []
+  (box :class "clock-widget"
+       :orientation "v"
+       :space-evenly false
+    (label :class "time" :text time)
+    (label :class "date" :text date)
+    (box :class "stats"
+         :orientation "h"
+         :space-evenly true
+      (box :class "stat-item" :orientation "h" :spacing 4
+        (label :class "stat-icon" :text "󰻠")
+        (label :class "stat-val" :text "${cpu}%"))
+      (box :class "stat-item" :orientation "h" :spacing 4
+        (label :class "stat-icon" :text "󰍛")
+        (label :class "stat-val" :text "${mem}%")))))
+
+; ── Windows ───────────────────────────────────
+(defwindow clock-widget
+  :monitor 0
+  :geometry (geometry :x "20px"
+                      :y "20px"
+                      :width "180px"
+                      :anchor "top right")
+  :stacking "bottom"
+  :exclusive false
+  :focusable false
+  (clock-widget))
