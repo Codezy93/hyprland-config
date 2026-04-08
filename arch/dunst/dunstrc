@@ -1,12 +1,12 @@
-# ── Dusk Garden — macOS x Cyberpunk Notifications
+# ── macOS Tahoe-inspired Notifications
 
 [global]
     monitor = 0
     follow = mouse
-    width = 340
-    height = 120
+    width = 360
+    height = 128
     origin = top-right
-    offset = 12x12
+    offset = 16x16
     notification_limit = 4
     progress_bar = true
 
@@ -18,14 +18,14 @@
     text_icon_padding = 14
 
     frame_width = 1
-    frame_color = "#48484A"
+    frame_color = "#DDE7F233"
     separator_color = frame
 
     sort = yes
     idle_threshold = 120
 
-    font = JetBrainsMono Nerd Font 11
-    line_height = 4
+    font = JetBrainsMono Nerd Font 10
+    line_height = 3
     markup = full
     format = "<b>%s</b>\n<span size='small'>%b</span>"
     alignment = left
@@ -42,29 +42,29 @@
     min_icon_size = 32
     max_icon_size = 48
 
-    corner_radius = 16
+    corner_radius = 20
 
     mouse_left_click = close_current
     mouse_middle_click = do_action, close_current
     mouse_right_click = close_all
 
 [urgency_low]
-    background = "#1C1C1EDD"
-    foreground = "#FCFCFC"
-    highlight = "#99E1D9"
-    frame_color = "#48484A66"
+    background = "#1A2232DD"
+    foreground = "#F6F7FB"
+    highlight = "#8EDBE8"
+    frame_color = "#F0F6FF2A"
     timeout = 4
 
 [urgency_normal]
-    background = "#1C1C1EDD"
-    foreground = "#FCFCFC"
-    highlight = "#99E1D9"
-    frame_color = "#48484A66"
+    background = "#1A2232DD"
+    foreground = "#F6F7FB"
+    highlight = "#8EDBE8"
+    frame_color = "#F0F6FF2A"
     timeout = 8
 
 [urgency_critical]
-    background = "#1C1C1EEE"
-    foreground = "#FCFCFC"
-    highlight = "#B48291"
-    frame_color = "#B4829166"
+    background = "#2B2030EE"
+    foreground = "#F6F7FB"
+    highlight = "#FF9EB6"
+    frame_color = "#FF9EB655"
     timeout = 0

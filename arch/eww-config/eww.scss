@@ -1,56 +1,87 @@
-// ── Dusk Garden — Eww Widget Styles ──────────
+// ── macOS Tahoe-inspired Eww Dock ────────────
 
-$bg:     rgba(28, 28, 30, 0.72);
-$border: rgba(72, 72, 74, 0.35);
-$fg:     #FCFCFC;
-$mint:   #99E1D9;
-$rose:   #B48291;
-$muted:  #8E8E93;
+$bg: rgba(18, 24, 34, 0.62);
+$bg-deep: rgba(25, 32, 46, 0.86);
+$border: rgba(255, 255, 255, 0.16);
+$fg: #f6f7fb;
+$muted: rgba(246, 247, 251, 0.55);
+$glow: #8edbe8;
+$soft: #eef5ff;
 
 * {
-    font-family: "JetBrainsMono Nerd Font", "Inter", sans-serif;
+    font-family: "SF Pro Display", "Helvetica Neue", "JetBrainsMono Nerd Font", sans-serif;
     font-size: 13px;
 }
 
-.clock-widget {
-    background: $bg;
+.dock-shell {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.16), $bg);
     border: 1px solid $border;
-    border-radius: 16px;
-    padding: 16px 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    border-bottom: 1px solid rgba(153, 225, 217, 0.1);
+    border-radius: 26px;
+    padding: 14px 18px;
+    box-shadow: 0 22px 60px rgba(3, 7, 16, 0.35);
 }
 
-.time {
-    color: $fg;
-    font-size: 36px;
-    font-weight: bold;
-    letter-spacing: 2px;
+.dock-left,
+.dock-right {
+    padding: 2px 0;
 }
 
-.date {
-    color: $muted;
+.dock-divider {
+    min-width: 1px;
+    margin: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.dock-item {
+    min-width: 62px;
+    padding: 10px 8px 4px;
+    border-radius: 18px;
+    background: transparent;
+    transition: 180ms ease;
+}
+
+.dock-button,
+.dock-clock-button {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.dock-item:hover,
+.dock-clock:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.dock-icon {
+    color: $soft;
+    font-size: 30px;
+}
+
+.dock-dot {
+    color: $glow;
     font-size: 11px;
-    margin-top: 2px;
-    margin-bottom: 12px;
+    margin-top: -6px;
 }
 
-.stats {
-    border-top: 1px solid $border;
-    padding-top: 10px;
-    margin-top: 4px;
+.dock-clock {
+    min-width: 72px;
+    padding: 11px 10px 8px;
+    border-radius: 18px;
 }
 
-.stat-item {
-    color: $muted;
-}
-
-.stat-icon {
-    color: $mint;
-    font-size: 13px;
-}
-
-.stat-val {
+.dock-clock-time {
     color: $fg;
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.dock-clock-label {
+    color: $muted;
+    font-size: 10px;
+}
+
+tooltip {
+    background: $bg-deep;
+    color: $fg;
 }

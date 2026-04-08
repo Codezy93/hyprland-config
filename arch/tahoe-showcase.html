@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tahoe Glass Arch Hyprland</title>
+  <link rel="stylesheet" href="./tahoe-showcase.css">
+</head>
+<body>
+  <div class="aurora aurora-left"></div>
+  <div class="aurora aurora-right"></div>
+
+  <main class="page">
+    <section class="hero-panel">
+      <div class="hero-copy">
+        <p class="eyebrow">Arch Linux x Hyprland</p>
+        <h1>Tahoe Glass</h1>
+        <p class="lede">
+          A macOS Tahoe-inspired Hyprland desktop with glassy layers, a floating menu bar,
+          Spotlight-like launcher styling, soft lockscreen blur, and an Eww Dock built
+          entirely from the existing Arch setup.
+        </p>
+
+        <div class="actions">
+          <a href="#overview" class="button button-primary">Explore Theme</a>
+          <a href="#dock" class="button button-secondary">See Dock</a>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-label">Compositor</span>
+            <strong>Hyprland</strong>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Widgets</span>
+            <strong>Eww Dock</strong>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Style</span>
+            <strong>Liquid Glass</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="desktop-preview" aria-label="Tahoe-style desktop preview">
+        <div class="menu-bar">
+          <div class="menu-left">
+            <span class="apple">󰀵</span>
+            <span>Finder</span>
+            <span>File</span>
+            <span>Edit</span>
+            <span>View</span>
+            <span>Window</span>
+            <span>Help</span>
+          </div>
+          <div class="menu-right">
+            <span>󰖀</span>
+            <span>󰂱</span>
+            <span>󰤨</span>
+            <span>Wed 08 Apr</span>
+            <span>22:41</span>
+          </div>
+        </div>
+
+        <div class="desktop-canvas">
+          <div class="window terminal">
+            <div class="window-top">
+              <div class="traffic-lights">
+                <span class="light light-red"></span>
+                <span class="light light-yellow"></span>
+                <span class="light light-green"></span>
+              </div>
+              <p>kitty</p>
+            </div>
+            <pre><code>$ fastfetch
+OS: Arch Linux
+WM: Hyprland
+Bar: Waybar
+Launcher: Wofi
+Notify: Dunst
+Widget: Eww Dock
+Theme: Tahoe Glass</code></pre>
+          </div>
+
+          <div class="window spotlight">
+            <p class="spotlight-title">Spotlight-style Launcher</p>
+            <div class="spotlight-input">Search apps, files, and actions</div>
+            <div class="spotlight-result active">Kitty</div>
+            <div class="spotlight-result">Thunar</div>
+            <div class="spotlight-result">Power Menu</div>
+          </div>
+
+          <div class="window lock-card">
+            <p class="window-label">Hyprlock</p>
+            <h2>22:41</h2>
+            <p>Welcome back, viraj</p>
+          </div>
+
+          <div class="dock">
+            <div class="dock-group">
+              <div class="dock-icon">
+                <span>󰀻</span>
+                <i></i>
+              </div>
+              <div class="dock-icon">
+                <span>󰆍</span>
+                <i></i>
+              </div>
+              <div class="dock-icon">
+                <span>󰈹</span>
+                <i></i>
+              </div>
+              <div class="dock-icon">
+                <span>󰖟</span>
+                <i></i>
+              </div>
+              <div class="dock-icon">
+                <span>󰂯</span>
+                <i></i>
+              </div>
+            </div>
+            <div class="dock-divider"></div>
+            <div class="dock-group">
+              <div class="dock-icon">
+                <span>󰇚</span>
+                <i></i>
+              </div>
+              <div class="dock-icon">
+                <span>󰖔</span>
+                <i></i>
+              </div>
+              <div class="dock-clock">
+                <strong>22:41</strong>
+                <small>Lock</small>
+              </div>
+              <div class="dock-icon">
+                <span>󰐥</span>
+                <i></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="overview" class="content-grid">
+      <article class="card card-wide">
+        <p class="eyebrow">Visual Direction</p>
+        <h2>From cyberpunk contrast to Tahoe softness</h2>
+        <p>
+          The theme now uses cooler blue-gray glass layers, muted white highlights, softer
+          shadows, and broader rounded corners. Instead of neon-heavy accents, the setup
+          leans on translucency, depth, and gentle cyan glow for focus states.
+        </p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">Waybar</p>
+        <h3>Menu Bar feel</h3>
+        <p>Styled as a floating translucent top bar rather than a hard-edged status strip.</p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">Wofi</p>
+        <h3>Spotlight feel</h3>
+        <p>A centered search surface with smooth glass background and softer focus treatment.</p>
+      </article>
+    </section>
+
+    <section id="dock" class="content-grid dock-section">
+      <article class="card">
+        <p class="eyebrow">Eww Dock</p>
+        <h3>mac-like app bar</h3>
+        <p>
+          The old clock widget is replaced with a bottom-centered dock that launches existing
+          apps and scripts already present in the setup.
+        </p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">No extras</p>
+        <h3>Same stack, new feel</h3>
+        <p>
+          No plugins or additional packages were introduced. The theme shift comes from
+          reworking Hyprland, Waybar, Wofi, Dunst, Kitty, Hyprlock, and Eww styling only.
+        </p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">Consistency</p>
+        <h3>One visual language</h3>
+        <p>
+          The menu bar, notifications, launcher, lockscreen, and dock now all share the same
+          Tahoe Glass palette and material treatment.
+        </p>
+      </article>
+    </section>
+
+    <section class="feature-strip">
+      <div class="feature-pill">Floating menu bar</div>
+      <div class="feature-pill">Liquid glass launcher</div>
+      <div class="feature-pill">Blurred lockscreen</div>
+      <div class="feature-pill">Tahoe-style dock</div>
+      <div class="feature-pill">Soft cyan highlights</div>
+      <div class="feature-pill">No plugin dependency</div>
+    </section>
+  </main>
+</body>
+</html>

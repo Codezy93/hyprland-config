@@ -1,44 +1,47 @@
-; ── Dusk Garden — Eww Widgets ────────────────
-; A minimal desktop clock widget
+; ── macOS Tahoe-inspired Eww Dock ────────────
 
 ; ── Variables ─────────────────────────────────
-(defpoll time :interval "1s"
+(defpoll current-time :interval "30s"
   "date '+%H:%M'")
 
-(defpoll date :interval "60s"
-  "date '+%A, %B %d'")
-
-(defpoll cpu :interval "3s"
-  "top -bn1 | grep 'Cpu(s)' | awk '{print int($2)}'")
-
-(defpoll mem :interval "5s"
-  "free | awk '/Mem:/ {printf \"%.0f\", $3/$2 * 100}'")
-
 ; ── Widgets ───────────────────────────────────
-(defwidget clock-widget []
-  (box :class "clock-widget"
-       :orientation "v"
-       :space-evenly false
-    (label :class "time" :text time)
-    (label :class "date" :text date)
-    (box :class "stats"
-         :orientation "h"
-         :space-evenly true
-      (box :class "stat-item" :orientation "h" :spacing 4
-        (label :class "stat-icon" :text "󰻠")
-        (label :class "stat-val" :text "${cpu}%"))
-      (box :class "stat-item" :orientation "h" :spacing 4
-        (label :class "stat-icon" :text "󰍛")
-        (label :class "stat-val" :text "${mem}%")))))
+(defwidget dock-item [icon command]
+  (button
+    :class "dock-button"
+    :onclick command
+    (box :class "dock-item" :orientation "v" :spacing 4 :space-evenly false
+      (label :class "dock-icon" :text icon)
+      (label :class "dock-dot" :text "•"))))
+
+(defwidget dock-clock []
+  (box :class "dock-clock" :orientation "v" :spacing 2 :space-evenly false
+    (label :class "dock-clock-time" :text current-time)
+    (label :class "dock-clock-label" :text "Lock")))
+
+(defwidget app-dock []
+  (centerbox :class "dock-shell"
+    :orientation "h"
+    (box :class "dock-left" :orientation "h" :spacing 10
+      (dock-item :icon "󰀻" :command "wofi --show drun")
+      (dock-item :icon "󰆍" :command "kitty")
+      (dock-item :icon "󰈹" :command "thunar")
+      (dock-item :icon "󰖟" :command "pavucontrol")
+      (dock-item :icon "󰂯" :command "blueman-manager"))
+    (box :class "dock-divider")
+    (box :class "dock-right" :orientation "h" :spacing 10
+      (dock-item :icon "󰇚" :command "~/.config/hypr/scripts/keybinds.sh")
+      (dock-item :icon "󰖔" :command "~/.config/hypr/scripts/darkmode-toggle.sh")
+      (button :class "dock-clock-button" :onclick "hyprlock" (dock-clock))
+      (dock-item :icon "󰐥" :command "~/.config/hypr/scripts/powermenu.sh"))))
 
 ; ── Windows ───────────────────────────────────
-(defwindow clock-widget
+(defwindow app-dock
   :monitor 0
-  :geometry (geometry :x "20px"
-                      :y "20px"
-                      :width "180px"
-                      :anchor "top right")
-  :stacking "bottom"
+  :geometry (geometry :x "0px"
+                      :y "18px"
+                      :width "760px"
+                      :anchor "bottom center")
+  :stacking "fg"
   :exclusive false
   :focusable false
-  (clock-widget))
+  (app-dock))
